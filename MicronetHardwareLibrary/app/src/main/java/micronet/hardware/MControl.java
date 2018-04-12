@@ -81,12 +81,8 @@ public class MControl {
 
 
     /**
-     * To get the reason for the A8/CPU power up, the following command can be sent. The response is a bit field:
-     *   #define POWER_MGM_DEVICE_ON_IGNITION_TRIGGER		(1 << 0)
-     *   #define POWER_MGM_DEVICE_ON_WIGGLE_TRIGGER			(1 << 1)
-     *   #define POWER_MGM_DEVICE_ARM_LOCKUP				(1 << 2)
-     *   #define POWER_MGM_DEVICE_WATCHDOG_RESET			(1 << 3)
-     * @return
+     * To get the reason for the A8/CPU power up, the following command can be sent.
+     * @return the Power On Reason
      */
     public String get_power_on_reason(){
         if (DBG) return "1234DBG";
@@ -174,8 +170,8 @@ public class MControl {
      * To get the LED status, the following command can be sent. Right LED is 0 and Center LED is 1. Brightness ranges from 0-255. Zero means the led is off. The RGB color code used is are standard RGB color codes defined at:
      * http://www.rapidtables.com/web/color/RGB_Color.htm
      */
-    public LEDs get_led_status(int led_num) {
-        LEDs led = new LEDs(led_num);
+    public LED get_led_status(int led_num) {
+        LED led = new LED(led_num);
 
         if (DBG) {
             return led;

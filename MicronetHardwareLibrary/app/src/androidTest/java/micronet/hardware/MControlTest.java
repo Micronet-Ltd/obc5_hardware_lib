@@ -109,9 +109,9 @@ public class MControlTest {
 
     @Test
     public void get_led_status() {
-        LEDs right = mControl.get_led_status(0);
-        LEDs center = mControl.get_led_status(1);
-        LEDs left = mControl.get_led_status(2);
+        LED right = mControl.get_led_status(0);
+        LED center = mControl.get_led_status(1);
+        LED left = mControl.get_led_status(2);
 
         Log.d(TAG, "Right LED: RED " + right.RED + ", GREEN " + right.GREEN + ", BLUE " + right.BLUE + ", BRIGHTNESS " + right.BRIGHTNESS);
         Log.d(TAG, "Center LED: RED " + center.RED + ", GREEN " + center.GREEN + ", BLUE " + center.BLUE + ", BRIGHTNESS " + center.BRIGHTNESS);
