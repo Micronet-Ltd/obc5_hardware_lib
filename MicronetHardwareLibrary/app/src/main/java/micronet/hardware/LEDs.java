@@ -1,0 +1,33 @@
+package micronet.hardware;
+
+import android.graphics.Color;
+
+import micronet.hardware.interfaces.LEDInterface;
+
+
+/**
+ * Created by brigham.diaz on 5/25/2016.
+ */
+public class LEDs implements LEDInterface {
+    public int RED = 0;
+    public int GREEN = 0;
+    public int BLUE = 0;
+    public int BRIGHTNESS = 0;
+
+    public final int led;
+
+    public LEDs(int led) {
+        this.led = led;
+    }
+
+    @Override
+    public void setValue(int rgb, int brightness) {
+        MControl mc = new MControl();
+        mc.set_led_status(led, brightness, rgb);
+    }
+
+    @Override
+    public int getColorValue() {
+        return Color.argb(0xFF, RED, GREEN, BLUE);
+    }
+}
