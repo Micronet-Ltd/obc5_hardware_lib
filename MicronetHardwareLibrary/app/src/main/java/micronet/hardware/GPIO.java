@@ -54,6 +54,11 @@ public class GPIO {
         return -1;
     }
 
+    /**
+     *
+     * @param value
+     * @return
+     */
     public boolean setValue(int value) {
         try {
             File file = new File("/sys/class/gpio/gpio"+gpioNumber+"/value");

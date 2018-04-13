@@ -8,11 +8,11 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * Created by brigham.diaz on 5/24/2016.
+ * Class to interface with the mctl library.
  */
 public class MControl {
 
-    public static boolean DBG = false;
+    protected static boolean DBG = false;
 
     static {
         System.loadLibrary("mctl");
@@ -42,7 +42,7 @@ public class MControl {
      * Gets the MCU version
      * @return MCU version Ex: "A.1.2.0"
      */
-    public String get_mcu_version() {
+    protected String get_mcu_version() {
         if (DBG) return "1234DBG";
         return jniGetMCUVersion();
     }
@@ -51,7 +51,7 @@ public class MControl {
      * Gets the fpga version
      * @return fpga version Ex: "41000002"
      */
-    public String get_fpga_version() {
+    protected String get_fpga_version() {
         if (DBG) return "1234DBG";
         return Integer.toHexString(jniGetFPGAVersion());
     }
@@ -64,7 +64,7 @@ public class MControl {
      * @param brightness brightness can be any int 0-255. Zero means the LED is off.
      * @param rgb        input a color as an int.
      */
-    public void set_led_status(int led, int brightness, int rgb) {
+    protected void set_led_status(int led, int brightness, int rgb) {
         if (DBG) return;
         jniSetLEDValue(led, brightness, rgb);
     }
@@ -74,7 +74,7 @@ public class MControl {
      * @param gpi_num
      * @return milliVolts
      */
-    public int get_adc_or_gpi_voltage(int gpi_num) {
+    protected int get_adc_or_gpi_voltage(int gpi_num) {
         if (DBG) return 1234;
         return jniGetADCorGPIVoltage(gpi_num);
     }
@@ -84,21 +84,9 @@ public class MControl {
      * To get the reason for the A8/CPU power up, the following command can be sent.
      * @return the Power On Reason
      */
-    public String get_power_on_reason(){
-        if (DBG) return "1234DBG";
-        switch(jniGetPowerOnReason()){
-            case(1 << 0):
-                return "Ignition Trigger";
-            case(1 << 1):
-                return "Wiggle Trigger";
-            case(1 << 2):
-                return "Arm Lockup";
-            case(1 << 3):
-                return "Watchdog Reset";
-            default:
-                return "Error";
-        }
-
+    protected int get_power_on_reason(){
+        if (DBG) return 5;
+        return jniGetPowerOnReason();
     }
 
     /**
@@ -111,7 +99,7 @@ public class MControl {
      * @param wait_time a wait time given in seconds
      * @return
      */
-    public int set_device_power_off(int wait_time) {
+    protected int set_device_power_off(int wait_time) {
         if (DBG) return 1234;
         return jniSetDevicePowerOff(wait_time);
     }
@@ -121,7 +109,7 @@ public class MControl {
      * Gets the MCU rtc date and time.
      * @return a string with the date and time. Ex: "2016-08-25 16:00:55.11"
      */
-    public String get_rtc_date_time() {
+    protected String get_rtc_date_time() {
         if (DBG) {
             SimpleDateFormat formatter = new SimpleDateFormat("hh.mm.ss");
             Date today = Calendar.getInstance().getTime();
@@ -140,7 +128,7 @@ public class MControl {
      * @param dateTime
      * @return
      */
-    public int set_rtc_date_time(String dateTime) {
+    protected int set_rtc_date_time(String dateTime) {
         if (DBG) return 1234;
         return jniSetRTCDateTime(dateTime);
     }
@@ -151,7 +139,7 @@ public class MControl {
      * @return an int array of length two containing digital and analog rtc cal, respectively.
      * A value of -1 indicates that value is invalid.
      */
-    public int[] get_rtc_cal_reg() {
+    protected int[] get_rtc_cal_reg() {
         if (DBG) {
             return new int[]{-1, -1};
         }
@@ -170,7 +158,7 @@ public class MControl {
      * To get the LED status, the following command can be sent. Right LED is 0 and Center LED is 1. Brightness ranges from 0-255. Zero means the led is off. The RGB color code used is are standard RGB color codes defined at:
      * http://www.rapidtables.com/web/color/RGB_Color.htm
      */
-    public LED get_led_status(int led_num) {
+    protected LED get_led_status(int led_num) {
         LED led = new LED(led_num);
 
         if (DBG) {
@@ -198,7 +186,7 @@ public class MControl {
      * Checks if the RTC battery is good, bad or not present. This function reads the register bit on the RTC to determine whether the RTC is good or bad.
      */
 
-    public String check_rtc_battery() {
+    protected String check_rtc_battery() {
         if (DBG) return "1234DBG";
         if (jniCheckRTCBattery()) {
             return "Good";
@@ -214,14 +202,14 @@ public class MControl {
      * The ignition threshold is in milliVolts. Values are big Endian format.
      * @return
      */
-    public int[] get_power_on(){
+    protected int[] get_power_on(){
         if(DBG) return new int[]{1,2,3};
         int[] arr=jniGetPowerOnThresholdCfg();
         return arr;
     }
 
     /** shutdown the device via OS command */
-    public static void setSysPropPowerCtlShutdown() {
+    protected static void setSysPropPowerCtlShutdown() {
         jniSetSysPropPowerCtlShutdown();
     }
 
@@ -230,7 +218,7 @@ public class MControl {
      * @param gpioNumber
      * @return
      */
-    public int get_gpio_value(int gpioNumber){
+    protected int get_gpio_value(int gpioNumber){
         if(DBG) return 2;
 
         GPIO gpio = new GPIO(gpioNumber);
@@ -243,12 +231,12 @@ public class MControl {
      * @param gpio_value
      * @return
      */
-    public int set_gpio_state(int gpio_num, int gpio_value){
+    protected int set_gpio_state(int gpio_num, int gpio_value){
         if(DBG) return 8;
         return jniSetGPIOStateDBG(gpio_num, gpio_value);
     }
 
-    public int get_gpoutput_state(int gpio_num){
+    protected int get_gpoutput_state(int gpio_num){
         if(DBG) return 8;
         return jniGetGPIOStateDBG(gpio_num);
     }

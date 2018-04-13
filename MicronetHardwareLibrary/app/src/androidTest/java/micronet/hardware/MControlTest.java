@@ -80,7 +80,7 @@ public class MControlTest {
 
     @Test
     public void get_power_on_reason() {
-        String powerOnReason = mControl.get_power_on_reason();
+        int powerOnReason = mControl.get_power_on_reason();
         Log.d(TAG, "Power On Reason: " + powerOnReason);
 
         // Check
