@@ -3,6 +3,8 @@ package micronet.hardware;
 import org.junit.Before;
 import org.junit.Test;
 
+import micronet.hardware.exception.MicronetHardwareException;
+
 import static org.junit.Assert.*;
 
 public class MicronetHardwareTest {
@@ -18,12 +20,22 @@ public class MicronetHardwareTest {
 
     @Test
     public void getAnalogInput() {
-        micronetHardware.getAnalogInput(MicronetHardware.kADC_ANALOG_IN1);
+        try {
+            micronetHardware.getAnalogInput(MicronetHardware.kADC_ANALOG_IN1);
+        } catch (MicronetHardwareException e) {
+            e.printStackTrace();
+            fail();
+        }
     }
 
     @Test
     public void getAllAnalogInput() {
-        micronetHardware.getAllAnalogInput();
+        try {
+            micronetHardware.getAllAnalogInput();
+        } catch (MicronetHardwareException e) {
+            e.printStackTrace();
+            fail();
+        }
     }
 
     @Test
@@ -38,7 +50,12 @@ public class MicronetHardwareTest {
 
     @Test
     public void getPowerUpIgnitionState(){
-        micronetHardware.getPowerUpIgnitionState();
+        try {
+            micronetHardware.getPowerUpIgnitionState();
+        } catch (MicronetHardwareException e) {
+            e.printStackTrace();
+            fail();
+        }
     }
 
     @Test

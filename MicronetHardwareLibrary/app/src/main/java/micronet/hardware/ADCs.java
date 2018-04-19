@@ -1,6 +1,7 @@
 package micronet.hardware;
 
 
+import micronet.hardware.exception.MicronetHardwareException;
 import micronet.hardware.interfaces.ADCInterface;
 
 /**
@@ -29,6 +30,11 @@ public enum ADCs implements ADCInterface {
     @Override
     public int getValue() {
         MControl mc = new MControl();
-        return mc.get_adc_or_gpi_voltage(gpi_num);
+        try {
+            return mc.get_adc_or_gpi_voltage(gpi_num);
+        } catch (MicronetHardwareException e) {
+            e.printStackTrace();
+            return -1;
+        }
     }
 }

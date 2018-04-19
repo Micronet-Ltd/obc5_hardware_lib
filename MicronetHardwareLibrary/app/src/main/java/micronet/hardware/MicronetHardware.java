@@ -19,6 +19,8 @@ import android.util.Log;
 
 import java.util.Arrays;
 
+import micronet.hardware.exception.MicronetHardwareException;
+
 /**
  *  Micronet hardware-specific access class for the OBC5.
  */
@@ -133,7 +135,7 @@ public final class MicronetHardware {
      *  		{@link #kADC_TEMPERATURE},
      *          {@link #kADC_CABLE_TYPE}
      */
-    public int getAnalogInput(int inputType) {
+    public int getAnalogInput(int inputType) throws MicronetHardwareException{
         int retval = -1;
 
         // Use MControl to get the adc voltage
@@ -162,7 +164,7 @@ public final class MicronetHardware {
      *  		{@link #kADC_TEMPERATURE},
      *          {@link #kADC_CABLE_TYPE}
      */
-    public int[] getAllAnalogInput() {
+    public int[] getAllAnalogInput() throws MicronetHardwareException {
         int[] retval = new int[12];
 
         retval[0] = mcontrol.get_adc_or_gpi_voltage(kADC_ANALOG_IN1);
@@ -261,7 +263,7 @@ public final class MicronetHardware {
      * In case of error, -1 is returned.
      * </pre>
      */
-    public int getPowerUpIgnitionState() {
+    public int getPowerUpIgnitionState() throws MicronetHardwareException {
         int retval = -1;
 
         retval = mcontrol.get_power_on_reason();

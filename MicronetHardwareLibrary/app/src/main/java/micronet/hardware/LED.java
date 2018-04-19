@@ -2,6 +2,8 @@ package micronet.hardware;
 
 import android.graphics.Color;
 
+import micronet.hardware.exception.MicronetHardwareException;
+
 /**
  * Created by brigham.diaz on 5/25/2016.
  */
@@ -22,7 +24,7 @@ public class LED {
         this.led = led;
     }
 
-    public void setValue(int rgb, int brightness) {
+    public void setValue(int rgb, int brightness) throws MicronetHardwareException {
         MControl mc = new MControl();
         mc.set_led_status(led, brightness, rgb);
     }
