@@ -19,6 +19,8 @@ import android.util.Log;
 
 import java.util.Arrays;
 
+import micronet.hardware.exception.MicronetHardwareException;
+
 /**
  *  Micronet hardware-specific access class for the OBC5.
  */
@@ -267,6 +269,119 @@ public final class MicronetHardware {
         Log.d(TAG, "Power on reason: " + retval);
 
         return retval;
+    }
+
+    /**
+     * Sets Delayed Power down Time in seconds.
+     *
+     * @param Timeinseconds Delayed power down in seconds
+     */
+    public void SetDelayedPowerDownTime(int Timeinseconds) {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Get Delayed Power Down Time in seconds.
+     *
+     * @return Delayed Power Down Time in seconds
+     */
+    public int GetDelayedPowerDownTime() {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Gets the MCU version.
+     * @return MCU version Ex: "A.1.2.0"
+     *
+     * @throws MicronetHardwareException if the mcu cannot be reached.
+     */
+    public String getMCUVersion() throws MicronetHardwareException{
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Gets the fpga version.
+     * @return fpga version Ex: "41000002"
+     *
+     * @throws MicronetHardwareException if the mcu cannot be reached.
+     */
+    public int getFPGAVersion() throws MicronetHardwareException{
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * To set the LED, the following command can be sent. The RGB color code used is are standard RGB color codes defined at:
+     * http://www.rapidtables.com/web/color/RGB_Color.html.
+     *
+     * @param led        right LED is 0, center LED is 1, and left LED is 2.
+     * @param brightness brightness can be any int 0-255. Zero means the LED is off.
+     * @param rgb        input a color as an int.
+     *
+     * @throws MicronetHardwareException if the mcu cannot be reached.
+     */
+    public void set_led_status(int led, int brightness, int rgb) throws MicronetHardwareException{
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * To get the LED status, the following command can be sent.
+     * Right LED is 0, center LED is 1, and left LED is 2. Brightness ranges from 0-255. Zero means the led is off. The RGB color code used is are standard RGB color codes defined at:
+     * http://www.rapidtables.com/web/color/RGB_Color.html
+     *
+     * @return LED object that contains the current state of the desired LED
+     *
+     * @throws MicronetHardwareException if the mcu cannot be reached.
+     */
+    public LED get_led_status(int led_num) throws MicronetHardwareException{
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Checks if the RTC battery is good, bad or not present. This function reads the register bit on the RTC to determine whether the RTC is good or bad.
+     *
+     * @return "Good" or "Low or not present" depending on the battery state.
+     *
+     * @throws MicronetHardwareException if the mcu cannot be reached.
+     */
+    public String check_rtc_battery() throws MicronetHardwareException{
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Gets the MCU rtc date and time.
+     * @return a string with the date and time. Ex: "2016-08-25 16:00:55.11"
+     *
+     * @throws MicronetHardwareException if the mcu cannot be reached.
+     */
+    public String get_rtc_date_time() throws MicronetHardwareException{
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * To set the MCU rtc date and time, send the following command. The command sets the time by using the android time.
+     * So if the android time is incorrect, it will set the wrong time. To verify the date and time set on android the ‘date’
+     * command can be run in a shell.
+     *
+     * Note: milliseconds are not set using the set command.
+     *
+     * @param dateTime A string datetime that datetime will be set to.
+     *
+     * @throws MicronetHardwareException if the mcu cannot be reached.
+     */
+    public void set_rtc_date_time(String dateTime) throws MicronetHardwareException{
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Get the digital and analog rtc cal registers.
+     *
+     * @return An int array of length two containing digital and analog rtc cal, respectively.
+     * A value of -1 indicates that value is invalid.
+     *
+     * @throws MicronetHardwareException if the mcu cannot be reached.
+     */
+    public int[] get_rtc_cal_reg() throws MicronetHardwareException{
+        throw new UnsupportedOperationException();
     }
 
 }
