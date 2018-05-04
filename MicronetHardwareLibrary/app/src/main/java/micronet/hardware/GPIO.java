@@ -7,9 +7,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
 public class GPIO {
-    public int gpioNumber;
+    protected int gpioNumber;
 
-    public GPIO(int gpioNum){
+    protected GPIO(int gpioNum){
         this.gpioNumber = gpioNum;
 
         // If GPIO hasn't already been exported then export it
@@ -34,7 +34,7 @@ public class GPIO {
         }
     }
 
-    public int getValue() {
+    protected int getValue() {
         try {
             File file = new File("/sys/class/gpio/gpio"+gpioNumber+"/value");
 
@@ -59,7 +59,7 @@ public class GPIO {
      * @param value
      * @return
      */
-    public boolean setValue(int value) {
+    protected boolean setValue(int value) {
         try {
             File file = new File("/sys/class/gpio/gpio"+gpioNumber+"/value");
             FileOutputStream fileOutputStream = new FileOutputStream(file);
