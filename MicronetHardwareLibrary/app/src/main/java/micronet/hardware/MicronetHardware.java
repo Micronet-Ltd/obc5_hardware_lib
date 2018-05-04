@@ -247,17 +247,15 @@ public final class MicronetHardware {
      * Get Power up ignition connected I/O state.
      *
      * <pre>
-     * @return  integer whose value depends on what I/O connection exist on power up.
-     *          To retrieve specific I/O connections, use the bitwise operation as shown in table below
-     *  <b>Bit Mask values versus I/Os Names</b>
-     *----------------------------------------------------
-     *    Bit Mask   |       I/O NAME
-     *----------------------------------------------------
-     *   0x0001      |       Ignition Trigger
-     *   0x0002      |       Wiggle Trigger
-     *   0x0004      |       Arm Lockup
-     *   0x0008      |       Watchdog Reset
-     *----------------------------------------------------
+     * @return  Integer whose value depends on what I/O connection exist on power up. To retrieve
+     * specific I/O connections, use the bitwise mapping shown below.
+     *
+     * Bit Mask: I/O NAME,
+     * 0x0001: Ignition Trigger,
+     * 0x0002: Wiggle Trigger,
+     * 0x0004: Arm Lockup,
+     * 0x0008: Watchdog Reset
+     *
      * In case of error, -1 is returned.
      * </pre>
      */

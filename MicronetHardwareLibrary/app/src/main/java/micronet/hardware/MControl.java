@@ -83,6 +83,15 @@ public class MControl {
     /**
      * To get the reason for the A8/CPU power up, the following command can be sent.
      * @return the Power On Reason
+     *      *  <b>Bit Mask values versus I/Os Names</b>
+     *----------------------------------------------------
+     *    Bit Mask   |       I/O NAME
+     *----------------------------------------------------
+     *   0x0001      |       Ignition Trigger
+     *   0x0002      |       Wiggle Trigger
+     *   0x0004      |       Arm Lockup
+     *   0x0008      |       Watchdog Reset
+     *----------------------------------------------------
      */
     protected int get_power_on_reason(){
         if (DBG) return 5;
