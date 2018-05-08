@@ -82,7 +82,7 @@ Java_micronet_hardware_MControl_jniGetLEDStatus(JNIEnv *env, jobject instance, j
 
     int fd = iosocket_connect();
     if (fd != 0) {
-        jint tmp[3];
+        jint tmp[4];
         uint8_t brightness, red, green, blue;
         result = get_led_status(&fd, led_num, &brightness, &red, &green, &blue);
         iosocket_disconnect(&fd);
