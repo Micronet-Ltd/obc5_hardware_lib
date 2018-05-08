@@ -174,20 +174,13 @@ public class MControl {
             return led;
         }
 
-        String command = "mctl api 02050" + led_num;
-        try {
-            Process p = Runtime.getRuntime().exec(command);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            String line = reader.readLine();
-            String[] tokens = line.split(",");
-            led.BRIGHTNESS = Integer.parseInt(tokens[1].split("=")[1].trim());
-            led.RED = Integer.parseInt(tokens[2].split("=")[1].trim());
-            led.GREEN = Integer.parseInt(tokens[3].split("=")[1].trim());
-            led.BLUE = Integer.parseInt(tokens[4].split("=")[1].trim());
+        int[] ledState = jniGetLEDStatus(led_num);
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        led.RED = ledState[0];
+        led.GREEN = ledState[1];
+        led.BLUE = ledState[2];
+        led.BRIGHTNESS = ledState[3];
+
         return led;
     }
 
