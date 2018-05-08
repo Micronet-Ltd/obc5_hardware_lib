@@ -2,6 +2,8 @@ package micronet.hardware;
 
 import android.graphics.Color;
 
+import micronet.hardware.exception.MicronetHardwareException;
+
 /**
  * LED class that contains the information regarding one of the devices LEDs.
  */
@@ -49,13 +51,13 @@ public class LED {
 
     /**
      * LED Constructor.
-     * @param led The LED you want to get with this LED object. Can be 0,1, or 2.
+     * @param led The LED you want to get with this LED object. Can be 0, 1, or 2.
      */
     public LED(int led) {
         this.led = led;
     }
 
-    protected void setValue(int rgb, int brightness) {
+    protected void setValue(int rgb, int brightness) throws MicronetHardwareException{
         MControl mc = new MControl();
         mc.set_led_status(led, brightness, rgb);
     }

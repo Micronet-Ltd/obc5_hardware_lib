@@ -256,7 +256,7 @@ public final class MicronetHardware {
      * 0x0001: Ignition Trigger,
      * 0x0002: Wiggle Trigger,
      * 0x0004: Arm Lockup,
-     * 0x0008: Watchdog Reset
+     * 0x0008: Watchdog Reset.
      *
      * In case of error, -1 is returned.
      * </pre>
@@ -274,39 +274,32 @@ public final class MicronetHardware {
     /**
      * Sets Delayed Power down Time in seconds.
      *
-     * @param Timeinseconds Delayed power down in seconds
-     */
-    public void SetDelayedPowerDownTime(int Timeinseconds) {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * Get Delayed Power Down Time in seconds.
+     * @param timeInSeconds Delayed power down in seconds
      *
-     * @return Delayed Power Down Time in seconds
+     * @throws MicronetHardwareException if there is an error setting the value.
      */
-    public int GetDelayedPowerDownTime() {
-        throw new UnsupportedOperationException();
+    public void SetDelayedPowerDownTime(int timeInSeconds) throws MicronetHardwareException{
+        mcontrol.set_device_power_off(timeInSeconds);
     }
 
     /**
      * Gets the MCU version.
      * @return MCU version Ex: "A.1.2.0"
      *
-     * @throws MicronetHardwareException if the mcu cannot be reached.
+     * @throws MicronetHardwareException if there is an error getting the value.
      */
     public String getMCUVersion() throws MicronetHardwareException{
-        throw new UnsupportedOperationException();
+        return mcontrol.get_mcu_version();
     }
 
     /**
      * Gets the fpga version.
      * @return fpga version Ex: "41000002"
      *
-     * @throws MicronetHardwareException if the mcu cannot be reached.
+     * @throws MicronetHardwareException if there is an error getting the value.
      */
-    public int getFPGAVersion() throws MicronetHardwareException{
-        throw new UnsupportedOperationException();
+    public String getFPGAVersion() throws MicronetHardwareException{
+        return mcontrol.get_fpga_version();
     }
 
     /**
@@ -317,10 +310,10 @@ public final class MicronetHardware {
      * @param brightness brightness can be any int 0-255. Zero means the LED is off.
      * @param rgb        input a color as an int.
      *
-     * @throws MicronetHardwareException if the mcu cannot be reached.
+     * @throws MicronetHardwareException if there is an error setting the value.
      */
-    public void set_led_status(int led, int brightness, int rgb) throws MicronetHardwareException{
-        throw new UnsupportedOperationException();
+    public void setLedStatus(int led, int brightness, int rgb) throws MicronetHardwareException{
+        mcontrol.set_led_status(led, brightness, rgb);
     }
 
     /**
@@ -330,10 +323,10 @@ public final class MicronetHardware {
      *
      * @return LED object that contains the current state of the desired LED
      *
-     * @throws MicronetHardwareException if the mcu cannot be reached.
+     * @throws MicronetHardwareException if there is an error getting the value.
      */
-    public LED get_led_status(int led_num) throws MicronetHardwareException{
-        throw new UnsupportedOperationException();
+    public LED getLedStatus(int led_num) throws MicronetHardwareException{
+        return mcontrol.get_led_status(led_num);
     }
 
     /**
@@ -341,20 +334,20 @@ public final class MicronetHardware {
      *
      * @return "Good" or "Low or not present" depending on the battery state.
      *
-     * @throws MicronetHardwareException if the mcu cannot be reached.
+     * @throws MicronetHardwareException if there is an error checking the value.
      */
-    public String check_rtc_battery() throws MicronetHardwareException{
-        throw new UnsupportedOperationException();
+    public String checkRTCBattery() throws MicronetHardwareException{
+        return mcontrol.check_rtc_battery();
     }
 
     /**
      * Gets the MCU rtc date and time.
      * @return a string with the date and time. Ex: "2016-08-25 16:00:55.11"
      *
-     * @throws MicronetHardwareException if the mcu cannot be reached.
+     * @throws MicronetHardwareException if there is an error getting the value.
      */
-    public String get_rtc_date_time() throws MicronetHardwareException{
-        throw new UnsupportedOperationException();
+    public String getRTCDateTime() throws MicronetHardwareException{
+        return mcontrol.get_rtc_date_time();
     }
 
     /**
@@ -366,10 +359,10 @@ public final class MicronetHardware {
      *
      * @param dateTime A string datetime that datetime will be set to.
      *
-     * @throws MicronetHardwareException if the mcu cannot be reached.
+     * @throws MicronetHardwareException if there is an error setting the value.
      */
-    public void set_rtc_date_time(String dateTime) throws MicronetHardwareException{
-        throw new UnsupportedOperationException();
+    public void setRTCDateTime(String dateTime) throws MicronetHardwareException{
+        mcontrol.set_rtc_date_time(dateTime);
     }
 
     /**
@@ -378,10 +371,10 @@ public final class MicronetHardware {
      * @return An int array of length two containing digital and analog rtc cal, respectively.
      * A value of -1 indicates that value is invalid.
      *
-     * @throws MicronetHardwareException if the mcu cannot be reached.
+     * @throws MicronetHardwareException if there is an error getting the value.
      */
-    public int[] get_rtc_cal_reg() throws MicronetHardwareException{
-        throw new UnsupportedOperationException();
+    public int[] getRTCCalReg() throws MicronetHardwareException{
+        return mcontrol.get_rtc_cal_reg();
     }
 
 }

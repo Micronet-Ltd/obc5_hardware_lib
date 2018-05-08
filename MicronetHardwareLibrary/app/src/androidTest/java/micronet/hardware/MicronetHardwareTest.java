@@ -1,7 +1,13 @@
 package micronet.hardware;
 
+import android.util.Log;
+
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Arrays;
+
+import micronet.hardware.exception.MicronetHardwareException;
 
 import static org.junit.Assert.*;
 
@@ -92,5 +98,93 @@ public class MicronetHardwareTest {
         String serial = info.GetSerialNumber();
 
         assertTrue(!serial.equals(""));
+    }
+
+    @Test
+    public void getMCUVersion(){
+        try {
+            String mcuVersion = micronetHardware.getMCUVersion();
+
+            Log.d(TAG, "MCU Version: " + mcuVersion);
+
+            // Check that the returned string is similar to "A.2.3.0"
+            assertTrue(mcuVersion.matches("\\w\\.\\d+\\.\\d+\\.\\d+"));
+        } catch (MicronetHardwareException e) {
+            Log.e(TAG, e.toString());
+            fail();
+        }
+    }
+
+    @Test
+    public void getFPGAVersion(){
+        try {
+            String fpgaVersion = micronetHardware.getFPGAVersion();
+            Log.d(TAG, "FPGA Version: " + fpgaVersion);
+
+            // Check that the returned string is similar to "41000003"
+            assertTrue(fpgaVersion.matches("\\d+"));
+        } catch (MicronetHardwareException e) {
+            Log.e(TAG, e.toString());
+            fail();
+        }
+    }
+
+    @Test
+    public void setLedStatus(){
+
+    }
+
+    @Test
+    public void getLedStatus(){
+        try {
+            LED right = micronetHardware.getLedStatus(0);
+            LED center = micronetHardware.getLedStatus(1);
+            LED left = micronetHardware.getLedStatus(2);
+
+            Log.d(TAG, "Right LED: RED " + right.RED + ", GREEN " + right.GREEN + ", BLUE " + right.BLUE + ", BRIGHTNESS " + right.BRIGHTNESS);
+            Log.d(TAG, "Center LED: RED " + center.RED + ", GREEN " + center.GREEN + ", BLUE " + center.BLUE + ", BRIGHTNESS " + center.BRIGHTNESS);
+            Log.d(TAG, "Left LED: RED " + left.RED + ", GREEN " + left.GREEN + ", BLUE " + left.BLUE + ", BRIGHTNESS " + left.BRIGHTNESS);
+        } catch (MicronetHardwareException e) {
+            Log.e(TAG, e.toString());
+            fail();
+        }
+    }
+
+    @Test
+    public void checkRTCBattery(){
+        try {
+            String batteryStatus = micronetHardware.checkRTCBattery();
+            Log.d(TAG, "RTC Battery Status: " + batteryStatus);
+        } catch (MicronetHardwareException e) {
+            Log.e(TAG, e.toString());
+            fail();
+        }
+    }
+
+    @Test
+    public void getRTCDateTime(){
+        try {
+            String rtcDateTime = micronetHardware.getRTCDateTime();
+            Log.d(TAG, "RTC DateTime: " + rtcDateTime);
+        } catch (MicronetHardwareException e) {
+            Log.e(TAG, e.toString());
+            fail();
+        }
+    }
+
+    @Test
+    public void setRTCDateTime(){
+
+    }
+
+    @Test
+    public void getRTCCalReg(){
+        try {
+            int[] rtcCalcReg = micronetHardware.getRTCCalReg();
+            Log.d(TAG, "RTC CalcReg: " + Arrays.toString(rtcCalcReg));
+        } catch (MicronetHardwareException e) {
+            Log.e(TAG, e.toString());
+            fail();
+        }
     }
 }
