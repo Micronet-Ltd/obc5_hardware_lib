@@ -52,7 +52,61 @@ public class MControlTest {
 
     @Test
     public void set_led_status() {
+        try {
+            mControl.set_led_status(0, 255,0xFF0000);
+            mControl.set_led_status(1, 255,0x00FF00);
+            mControl.set_led_status(2, 255,0x0000FF);
 
+            LED right = mControl.get_led_status(0);
+            LED center = mControl.get_led_status(1);
+            LED left = mControl.get_led_status(2);
+
+            assertEquals(right.RED, 255);
+            assertEquals(right.GREEN, 0);
+            assertEquals(right.BLUE, 0);
+            assertEquals(right.BRIGHTNESS, 255);
+
+            assertEquals(center.RED, 0);
+            assertEquals(center.GREEN, 255);
+            assertEquals(center.BLUE, 0);
+            assertEquals(center.BRIGHTNESS, 255);
+
+            assertEquals(left.RED, 0);
+            assertEquals(left.GREEN, 0);
+            assertEquals(left.BLUE, 255);
+            assertEquals(left.BRIGHTNESS, 255);
+
+            Log.d(TAG, "Right LED: RED " + right.RED + ", GREEN " + right.GREEN + ", BLUE " + right.BLUE + ", BRIGHTNESS " + right.BRIGHTNESS);
+            Log.d(TAG, "Center LED: RED " + center.RED + ", GREEN " + center.GREEN + ", BLUE " + center.BLUE + ", BRIGHTNESS " + center.BRIGHTNESS);
+            Log.d(TAG, "Left LED: RED " + left.RED + ", GREEN " + left.GREEN + ", BLUE " + left.BLUE + ", BRIGHTNESS " + left.BRIGHTNESS);
+
+            // Set back to original colors
+            mControl.set_led_status(0, 0,0x000000);
+            mControl.set_led_status(1, 0,0x000000);
+            mControl.set_led_status(2, 255,0x00FF00);
+
+            right = mControl.get_led_status(0);
+            center = mControl.get_led_status(1);
+            left = mControl.get_led_status(2);
+
+            assertEquals(right.RED, 0);
+            assertEquals(right.GREEN, 0);
+            assertEquals(right.BLUE, 0);
+            assertEquals(right.BRIGHTNESS, 0);
+
+            assertEquals(center.RED, 0);
+            assertEquals(center.GREEN, 0);
+            assertEquals(center.BLUE, 0);
+            assertEquals(center.BRIGHTNESS, 0);
+
+            assertEquals(left.RED, 0);
+            assertEquals(left.GREEN, 255);
+            assertEquals(left.BLUE, 0);
+            assertEquals(left.BRIGHTNESS, 255);
+        } catch (MicronetHardwareException e) {
+            Log.e(TAG, e.toString());
+            fail();
+        }
 
     }
 
@@ -84,6 +138,21 @@ public class MControlTest {
         Log.d(TAG, "ADC_POWER_VCAP: " + ADC_POWER_VCAP);
         Log.d(TAG, "ADC_TEMPERATURE: " + ADC_TEMPERATURE);
         Log.d(TAG, "ADC_CABLE_TYPE: " + ADC_CABLE_TYPE);
+
+        // Check that values are in correct range
+        // Correct range depends on input voltages to the device and the state of the device
+        assertTrue(ADC_ANALOG_IN1 > 11000 && ADC_ANALOG_IN1 < 23000);
+        assertTrue(ADC_GPIO_IN1 > 2700 && ADC_GPIO_IN1 < 3300);
+        assertTrue(ADC_GPIO_IN2 > 2700 && ADC_GPIO_IN2 < 3300);
+        assertTrue(ADC_GPIO_IN3 > 2700 && ADC_GPIO_IN3 < 3300);
+        assertTrue(ADC_GPIO_IN4 > 2700 && ADC_GPIO_IN4 < 3300);
+        assertTrue(ADC_GPIO_IN5 > 2700 && ADC_GPIO_IN5 < 3300);
+        assertTrue(ADC_GPIO_IN6 > 2700 && ADC_GPIO_IN6 < 3300);
+        assertTrue(ADC_GPIO_IN7 > 2700 && ADC_GPIO_IN7 < 3300);
+        assertTrue(ADC_POWER_IN > 11000 && ADC_POWER_IN < 23000);
+        assertTrue(ADC_POWER_VCAP > 4000 && ADC_POWER_VCAP < 6000);
+        assertTrue(ADC_TEMPERATURE > 500 && ADC_TEMPERATURE < 1500);
+        assertTrue(ADC_CABLE_TYPE > 2000 && ADC_CABLE_TYPE < 4000);
     }
 
     @Test
@@ -139,6 +208,8 @@ public class MControlTest {
     public void check_rtc_battery() {
         String batteryStatus = mControl.check_rtc_battery();
         Log.d(TAG, "RTC Battery Status: " + batteryStatus);
+
+
     }
 
     @Test

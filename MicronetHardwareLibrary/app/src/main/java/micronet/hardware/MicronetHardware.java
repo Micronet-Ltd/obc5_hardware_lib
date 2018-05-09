@@ -288,7 +288,7 @@ public final class MicronetHardware {
      *
      * @throws MicronetHardwareException if there is an error getting the value.
      */
-    public String getMCUVersion() throws MicronetHardwareException{
+    public String getMcuVersion() throws MicronetHardwareException{
         return mcontrol.get_mcu_version();
     }
 
@@ -298,7 +298,7 @@ public final class MicronetHardware {
      *
      * @throws MicronetHardwareException if there is an error getting the value.
      */
-    public String getFPGAVersion() throws MicronetHardwareException{
+    public String getFpgaVersion() throws MicronetHardwareException{
         return mcontrol.get_fpga_version();
     }
 
@@ -318,7 +318,8 @@ public final class MicronetHardware {
 
     /**
      * To get the LED status, the following command can be sent.
-     * Right LED is 0, center LED is 1, and left LED is 2. Brightness ranges from 0-255. Zero means the led is off. The RGB color code used is are standard RGB color codes defined at:
+     * Right LED is 0, center LED is 1, and left LED is 2. Brightness ranges from 0-255.
+     * Zero means the led is off. The RGB color code used is are standard RGB color codes defined at:
      * http://www.rapidtables.com/web/color/RGB_Color.html
      *
      * @return LED object that contains the current state of the desired LED
@@ -336,7 +337,7 @@ public final class MicronetHardware {
      *
      * @throws MicronetHardwareException if there is an error checking the value.
      */
-    public String checkRTCBattery() throws MicronetHardwareException{
+    public String checkRtcBattery() throws MicronetHardwareException{
         return mcontrol.check_rtc_battery();
     }
 
@@ -346,14 +347,13 @@ public final class MicronetHardware {
      *
      * @throws MicronetHardwareException if there is an error getting the value.
      */
-    public String getRTCDateTime() throws MicronetHardwareException{
+    public String getRtcDateTime() throws MicronetHardwareException{
         return mcontrol.get_rtc_date_time();
     }
 
     /**
-     * To set the MCU rtc date and time, send the following command. The command sets the time by using the android time.
-     * So if the android time is incorrect, it will set the wrong time. To verify the date and time set on android the ‘date’
-     * command can be run in a shell.
+     * To set the MCU rtc date and time, send the following command. The command sets the time by using passed in dateTime string.
+     * Datetime String must be of the form: "2000-00-00 00:00:00.00".
      *
      * Note: milliseconds are not set using the set command.
      *
@@ -361,19 +361,18 @@ public final class MicronetHardware {
      *
      * @throws MicronetHardwareException if there is an error setting the value.
      */
-    public void setRTCDateTime(String dateTime) throws MicronetHardwareException{
+    public void setRtcDateTime(String dateTime) throws MicronetHardwareException{
         mcontrol.set_rtc_date_time(dateTime);
     }
 
     /**
-     * Get the digital and analog rtc cal registers.
+     * Get the digital and analog rtc calibration registers.
      *
      * @return An int array of length two containing digital and analog rtc cal, respectively.
-     * A value of -1 indicates that value is invalid.
      *
      * @throws MicronetHardwareException if there is an error getting the value.
      */
-    public int[] getRTCCalReg() throws MicronetHardwareException{
+    public int[] getRtcCalReg() throws MicronetHardwareException{
         return mcontrol.get_rtc_cal_reg();
     }
 

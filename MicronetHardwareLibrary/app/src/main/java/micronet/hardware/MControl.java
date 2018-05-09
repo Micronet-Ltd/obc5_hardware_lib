@@ -179,9 +179,8 @@ public class MControl {
     }
 
     /**
-     * To set the MCU rtc date and time, send the following command. The command sets the time by using the android time.
-     * So if the android time is incorrect, it will set the wrong time. To verify the date and time set on android the ‘date’
-     * command can be run in a shell.
+     * To set the MCU rtc date and time, send the following command. The command sets the time by using passed in dateTime string.
+     * Datetime String must be of the form: "2000-00-00 00:00:00.00".
      *
      *Note: milliseconds are not set using the set command.
      *
@@ -189,6 +188,10 @@ public class MControl {
      * @throws MicronetHardwareException if mcu cannot be reached.
      */
     protected void set_rtc_date_time(String dateTime) throws MicronetHardwareException{
+        if(!dateTime.matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{2}")){
+            throw new IllegalArgumentException("Date time must be of the form: 2000-00-00 00:00:00.00");
+        }
+
         int resultCode = jniSetRTCDateTime(dateTime);
 
         if(resultCode < 0){
