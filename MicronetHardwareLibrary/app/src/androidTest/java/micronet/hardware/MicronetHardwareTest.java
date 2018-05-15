@@ -1,7 +1,13 @@
 package micronet.hardware;
 
+import android.util.Log;
+
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Arrays;
+
+import micronet.hardware.exception.MicronetHardwareException;
 
 import static org.junit.Assert.*;
 
@@ -32,7 +38,19 @@ public class MicronetHardwareTest {
         int cable_type = micronetHardware.getAnalogInput(MicronetHardware.kADC_CABLE_TYPE);
 
         // Check that values are in correct range
-
+        // Correct range depends on input voltages to the device and the state of the device
+        assertTrue(analog_in1 > 11000 && analog_in1 < 23000);
+        assertTrue(gpio_in1 > 2700 && gpio_in1 < 3300);
+        assertTrue(gpio_in2 > 2700 && gpio_in2 < 3300);
+        assertTrue(gpio_in3 > 2700 && gpio_in3 < 3300);
+        assertTrue(gpio_in4 > 2700 && gpio_in4 < 3300);
+        assertTrue(gpio_in5 > 2700 && gpio_in5 < 3300);
+        assertTrue(gpio_in6 > 2700 && gpio_in6 < 3300);
+        assertTrue(gpio_in7 > 2700 && gpio_in7 < 3300);
+        assertTrue(power_in > 11000 && power_in < 23000);
+        assertTrue(power_vcap > 4000 && power_vcap < 6000);
+        assertTrue(temperature > 500 && temperature < 1500);
+        assertTrue(cable_type > 2000 && cable_type < 4000);
     }
 
     @Test
@@ -40,6 +58,19 @@ public class MicronetHardwareTest {
         int[] returnArray = micronetHardware.getAllAnalogInput();
 
         // Check that values are in correct range
+        // Correct range depends on input voltages to the device and the state of the device
+        assertTrue(returnArray[0] > 11000 && returnArray[0] < 23000);
+        assertTrue(returnArray[1] > 2700 && returnArray[1] < 3300);
+        assertTrue(returnArray[2] > 2700 && returnArray[2] < 3300);
+        assertTrue(returnArray[3] > 2700 && returnArray[3] < 3300);
+        assertTrue(returnArray[4] > 2700 && returnArray[4] < 3300);
+        assertTrue(returnArray[5] > 2700 && returnArray[5] < 3300);
+        assertTrue(returnArray[6] > 2700 && returnArray[6] < 3300);
+        assertTrue(returnArray[7] > 2700 && returnArray[7] < 3300);
+        assertTrue(returnArray[8] > 11000 && returnArray[8] < 23000);
+        assertTrue(returnArray[9] > 4000 && returnArray[9] < 6000);
+        assertTrue(returnArray[10] > 500 && returnArray[10] < 1500);
+        assertTrue(returnArray[11] > 2000 && returnArray[11] < 4000);
     }
 
     @Test
@@ -54,14 +85,14 @@ public class MicronetHardwareTest {
         int gpio_in7 = micronetHardware.getInputState(MicronetHardware.kADC_GPIO_IN7);
 
         // Check that values are either 0 or 1
-        assertTrue(analog_in1 == 0 || analog_in1 == 1);
-        assertTrue(gpio_in1 == 0 || gpio_in1 == 1);
-        assertTrue(gpio_in2 == 0 || gpio_in2 == 1);
-        assertTrue(gpio_in3 == 0 || gpio_in3 == 1);
-        assertTrue(gpio_in4 == 0 || gpio_in4 == 1);
-        assertTrue(gpio_in5 == 0 || gpio_in5 == 1);
-        assertTrue(gpio_in6 == 0 || gpio_in6 == 1);
-        assertTrue(gpio_in7 == 0 || gpio_in7 == 1);
+        assertTrue(analog_in1 == 1);
+        assertTrue(gpio_in1 == 0);
+        assertTrue(gpio_in2 == 0);
+        assertTrue(gpio_in3 == 0);
+        assertTrue(gpio_in4 == 0);
+        assertTrue(gpio_in5 == 0);
+        assertTrue(gpio_in6 == 0);
+        assertTrue(gpio_in7 == 0);
     }
 
     @Test
@@ -69,14 +100,14 @@ public class MicronetHardwareTest {
         int[] returnArray = micronetHardware.getAllPinInState();
 
         // Check that values are either 0 or 1
-        assertTrue(returnArray[0] == 0 || returnArray[0] == 1);
-        assertTrue(returnArray[1] == 0 || returnArray[1] == 1);
-        assertTrue(returnArray[2] == 0 || returnArray[2] == 1);
-        assertTrue(returnArray[3] == 0 || returnArray[3] == 1);
-        assertTrue(returnArray[4] == 0 || returnArray[4] == 1);
-        assertTrue(returnArray[5] == 0 || returnArray[5] == 1);
-        assertTrue(returnArray[6] == 0 || returnArray[6] == 1);
-        assertTrue(returnArray[7] == 0 || returnArray[7] == 1);
+        assertTrue(returnArray[0] == 1);
+        assertTrue(returnArray[1] == 0);
+        assertTrue(returnArray[2] == 0);
+        assertTrue(returnArray[3] == 0);
+        assertTrue(returnArray[4] == 0);
+        assertTrue(returnArray[5] == 0);
+        assertTrue(returnArray[6] == 0);
+        assertTrue(returnArray[7] == 0);
     }
 
     @Test
@@ -91,6 +122,181 @@ public class MicronetHardwareTest {
         Info info = new Info();
         String serial = info.GetSerialNumber();
 
-        assertTrue(!serial.equals(""));
+        assertNotEquals("",serial);
+    }
+
+    @Test
+    public void getMCUVersion(){
+        try {
+            String mcuVersion = micronetHardware.getMcuVersion();
+
+            Log.d(TAG, "MCU Version: " + mcuVersion);
+
+            // Check that the returned string is similar to "A.2.3.0"
+            assertTrue(mcuVersion.matches("\\w\\.\\d+\\.\\d+\\.\\d+"));
+        } catch (MicronetHardwareException e) {
+            Log.e(TAG, e.toString());
+            fail();
+        }
+    }
+
+    @Test
+    public void getFPGAVersion(){
+        try {
+            String fpgaVersion = micronetHardware.getFpgaVersion();
+            Log.d(TAG, "FPGA Version: " + fpgaVersion);
+
+            // Check that the returned string is similar to "41000003"
+            assertTrue(fpgaVersion.matches("\\d+"));
+        } catch (MicronetHardwareException e) {
+            Log.e(TAG, e.toString());
+            fail();
+        }
+    }
+
+    @Test
+    public void setLedStatus(){
+        try {
+            micronetHardware.setLedStatus(0, 255,0xFF0000);
+            micronetHardware.setLedStatus(1, 255,0x00FF00);
+            micronetHardware.setLedStatus(2, 255,0x0000FF);
+
+            Thread.sleep(1000);
+
+            LED right = micronetHardware.getLedStatus(0);
+            LED center = micronetHardware.getLedStatus(1);
+            LED left = micronetHardware.getLedStatus(2);
+
+            assertEquals(right.RED, 255);
+            assertEquals(right.GREEN, 0);
+            assertEquals(right.BLUE, 0);
+            assertEquals(right.BRIGHTNESS, 255);
+
+            assertEquals(center.RED, 0);
+            assertEquals(center.GREEN, 255);
+            assertEquals(center.BLUE, 0);
+            assertEquals(center.BRIGHTNESS, 255);
+
+            assertEquals(left.RED, 0);
+            assertEquals(left.GREEN, 0);
+            assertEquals(left.BLUE, 255);
+            assertEquals(left.BRIGHTNESS, 255);
+
+            Log.d(TAG, "Right LED: RED " + right.RED + ", GREEN " + right.GREEN + ", BLUE " + right.BLUE + ", BRIGHTNESS " + right.BRIGHTNESS);
+            Log.d(TAG, "Center LED: RED " + center.RED + ", GREEN " + center.GREEN + ", BLUE " + center.BLUE + ", BRIGHTNESS " + center.BRIGHTNESS);
+            Log.d(TAG, "Left LED: RED " + left.RED + ", GREEN " + left.GREEN + ", BLUE " + left.BLUE + ", BRIGHTNESS " + left.BRIGHTNESS);
+
+            // Set back to original colors
+            micronetHardware.setLedStatus(0, 0,0x000000);
+            micronetHardware.setLedStatus(1, 0,0x000000);
+            micronetHardware.setLedStatus(2, 255,0x00FF00);
+
+            Thread.sleep(1000);
+
+            right = micronetHardware.getLedStatus(0);
+            center = micronetHardware.getLedStatus(1);
+            left = micronetHardware.getLedStatus(2);
+
+            assertEquals(right.RED, 0);
+            assertEquals(right.GREEN, 0);
+            assertEquals(right.BLUE, 0);
+            assertEquals(right.BRIGHTNESS, 0);
+
+            assertEquals(center.RED, 0);
+            assertEquals(center.GREEN, 0);
+            assertEquals(center.BLUE, 0);
+            assertEquals(center.BRIGHTNESS, 0);
+
+            assertEquals(left.RED, 0);
+            assertEquals(left.GREEN, 255);
+            assertEquals(left.BLUE, 0);
+            assertEquals(left.BRIGHTNESS, 255);
+        } catch (Exception e) {
+            Log.e(TAG, e.toString());
+            fail();
+        }
+    }
+
+    @Test
+    public void getLedStatus(){
+        try {
+            LED right = micronetHardware.getLedStatus(0);
+            LED center = micronetHardware.getLedStatus(1);
+            LED left = micronetHardware.getLedStatus(2);
+
+            Log.d(TAG, "Right LED: RED " + right.RED + ", GREEN " + right.GREEN + ", BLUE " + right.BLUE + ", BRIGHTNESS " + right.BRIGHTNESS);
+            Log.d(TAG, "Center LED: RED " + center.RED + ", GREEN " + center.GREEN + ", BLUE " + center.BLUE + ", BRIGHTNESS " + center.BRIGHTNESS);
+            Log.d(TAG, "Left LED: RED " + left.RED + ", GREEN " + left.GREEN + ", BLUE " + left.BLUE + ", BRIGHTNESS " + left.BRIGHTNESS);
+        } catch (MicronetHardwareException e) {
+            Log.e(TAG, e.toString());
+            fail();
+        }
+    }
+
+    @Test
+    public void checkRTCBattery(){
+        try {
+            String batteryStatus = micronetHardware.checkRtcBattery();
+            Log.d(TAG, "RTC Battery Status: " + batteryStatus);
+
+            assertEquals("Good",batteryStatus);
+        } catch (MicronetHardwareException e) {
+            Log.e(TAG, e.toString());
+            fail();
+        }
+    }
+
+    @Test
+    public void getRTCDateTime(){
+        try {
+            String rtcDateTime = micronetHardware.getRtcDateTime();
+            Log.d(TAG, "RTC DateTime: " + rtcDateTime);
+
+            // Make sure it matches the format of a rtc string
+            assertTrue(rtcDateTime.matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{2}"));
+        } catch (MicronetHardwareException e) {
+            Log.e(TAG, e.toString());
+            fail();
+        }
+    }
+
+    @Test
+    public void setRTCDateTime(){
+        try {
+            // Will set datetime to "1111-11-11 11:11:11.00"
+            micronetHardware.setRtcDateTime("1111-11-11 11:11:11.11");
+
+            String rtcDateTime = micronetHardware.getRtcDateTime();
+            Log.d(TAG, "RTC DateTime: " + rtcDateTime);
+
+            // Make sure it matches the format of a rtc string
+            assertTrue(rtcDateTime.matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{2}"));
+
+            // Will set datetime to "2011-01-20 05:34:22.00"
+            micronetHardware.setRtcDateTime("2011-01-20 05:34:22.55");
+
+            rtcDateTime = micronetHardware.getRtcDateTime();
+            Log.d(TAG, "RTC DateTime: " + rtcDateTime);
+
+            // Make sure it matches the format of a rtc string
+            assertTrue(rtcDateTime.matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{2}"));
+        } catch (MicronetHardwareException e) {
+            Log.e(TAG, e.toString());
+            fail();
+        }
+    }
+
+    @Test
+    public void getRTCCalReg(){
+        try {
+            int[] rtcCalcReg = micronetHardware.getRtcCalReg();
+            Log.d(TAG, "RTC CalcReg: " + Arrays.toString(rtcCalcReg));
+
+            assertTrue(rtcCalcReg[0] > 0);
+            assertTrue(rtcCalcReg[1] > 0);
+        } catch (MicronetHardwareException e) {
+            Log.e(TAG, e.toString());
+            fail();
+        }
     }
 }
