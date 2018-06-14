@@ -43,7 +43,7 @@ int iosocket_connect()
 	int fd;
 	struct timeval timeout;
 	timeout.tv_sec = 0;
-	timeout.tv_usec = 500000;
+	timeout.tv_usec = 50000;
 
 	fd = socket(AF_UNIX, SOCK_DGRAM, 0);
 
