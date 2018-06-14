@@ -167,7 +167,14 @@ public final class MicronetHardware {
     public int[] getAllAnalogInput() {
         int[] retval = new int[12];
 
+        for (int i = 0; i < retval.length; i++){
+            retval[i] = -1;
+        }
+
         retval[0] = mcontrol.get_adc_or_gpi_voltage(kADC_ANALOG_IN1);
+        if (retval[0] == -1){
+            return retval;
+        }
         retval[1] = mcontrol.get_adc_or_gpi_voltage(kADC_GPIO_IN1);
         retval[2] = mcontrol.get_adc_or_gpi_voltage(kADC_GPIO_IN2);
         retval[3] = mcontrol.get_adc_or_gpi_voltage(kADC_GPIO_IN3);
@@ -230,8 +237,15 @@ public final class MicronetHardware {
     public int[] getAllPinInState (){
         int[] retval = new int[8];
 
+        for (int i = 0; i < retval.length; i++){
+            retval[i] = -1;
+        }
+
         // GPIO Inputs match to 692 to 699.
         retval[0] = mcontrol.get_gpio_value(kADC_ANALOG_IN1 + 692);
+        if (retval[0] == -1){
+            return retval;
+        }
         retval[1] = mcontrol.get_gpio_value(kADC_GPIO_IN1 + 692);
         retval[2] = mcontrol.get_gpio_value(kADC_GPIO_IN2 + 692);
         retval[3] = mcontrol.get_gpio_value(kADC_GPIO_IN3 + 692);
