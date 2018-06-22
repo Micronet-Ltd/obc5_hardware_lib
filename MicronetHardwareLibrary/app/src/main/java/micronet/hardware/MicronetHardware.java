@@ -185,22 +185,17 @@ public final class MicronetHardware {
             retval[i] = -1;
         }
 
+        // Loop through all, if error then return early
         synchronized (lock){
-            retval[0] = mcontrol.get_adc_or_gpi_voltage(kADC_ANALOG_IN1);
-            if (retval[0] == -1){
-                return retval;
+            for(int i = 0; i < 12; i++){
+                retval[i] = mcontrol.get_adc_or_gpi_voltage(i);
+
+                // If -1 returned, then not able to communicate with mcu properly.
+                if(retval[i] == -1){
+                    Log.d(TAG, Arrays.toString(retval));
+                    return retval;
+                }
             }
-            retval[1] = mcontrol.get_adc_or_gpi_voltage(kADC_GPIO_IN1);
-            retval[2] = mcontrol.get_adc_or_gpi_voltage(kADC_GPIO_IN2);
-            retval[3] = mcontrol.get_adc_or_gpi_voltage(kADC_GPIO_IN3);
-            retval[4] = mcontrol.get_adc_or_gpi_voltage(kADC_GPIO_IN4);
-            retval[5] = mcontrol.get_adc_or_gpi_voltage(kADC_GPIO_IN5);
-            retval[6] = mcontrol.get_adc_or_gpi_voltage(kADC_GPIO_IN6);
-            retval[7] = mcontrol.get_adc_or_gpi_voltage(kADC_GPIO_IN7);
-            retval[8] = mcontrol.get_adc_or_gpi_voltage(kADC_POWER_IN);
-            retval[9] = mcontrol.get_adc_or_gpi_voltage(kADC_POWER_VCAP);
-            retval[10] = mcontrol.get_adc_or_gpi_voltage(kADC_TEMPERATURE);
-            retval[11] = mcontrol.get_adc_or_gpi_voltage(kADC_CABLE_TYPE);
         }
 
         Log.d(TAG, Arrays.toString(retval));
@@ -259,19 +254,17 @@ public final class MicronetHardware {
             retval[i] = -1;
         }
 
+        // Loop through all, if error then return early
         synchronized (lock){
-            // GPIO Inputs match to 692 to 699.
-            retval[0] = mcontrol.get_gpio_value(kADC_ANALOG_IN1 + 692);
-            if (retval[0] == -1){
-                return retval;
+            for(int i = 0; i < 8; i++){
+                retval[i] = mcontrol.get_gpio_value(i + 692);
+
+                // If -1 returned, then not able to communicate with mcu properly.
+                if(retval[i] == -1){
+                    Log.d(TAG, Arrays.toString(retval));
+                    return retval;
+                }
             }
-            retval[1] = mcontrol.get_gpio_value(kADC_GPIO_IN1 + 692);
-            retval[2] = mcontrol.get_gpio_value(kADC_GPIO_IN2 + 692);
-            retval[3] = mcontrol.get_gpio_value(kADC_GPIO_IN3 + 692);
-            retval[4] = mcontrol.get_gpio_value(kADC_GPIO_IN4 + 692);
-            retval[5] = mcontrol.get_gpio_value(kADC_GPIO_IN5 + 692);
-            retval[6] = mcontrol.get_gpio_value(kADC_GPIO_IN6 + 692);
-            retval[7] = mcontrol.get_gpio_value(kADC_GPIO_IN7 + 692);
         }
 
         Log.d(TAG, Arrays.toString(retval));
