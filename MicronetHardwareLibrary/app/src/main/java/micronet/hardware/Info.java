@@ -15,6 +15,7 @@
  */
 package micronet.hardware;
 
+import android.os.Build;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -34,26 +35,15 @@ public class Info {
      * Format is YYYYMMDD.NUMBER.
      * For example 20150817.000 represents August 17th 2015 and minor version 0.
      */
-    public static final String VERSION = "20180509.000";
+    public static final String VERSION = "20180622.000";
 
     /**
      * Returns Serial Number of the device.
      */
     public String GetSerialNumber() {
-        String serialNumber = "";
+        String serialNumber = Build.SERIAL;
 
-        try {
-            String commands[] = {"/system/bin/getprop", "ro.serialno"};
-            Process process = Runtime.getRuntime().exec(commands);
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                serialNumber = line.replaceAll("\\s+","");
-            }
-            Log.d(TAG, "Serial Number: " + serialNumber);
-        } catch (IOException e) {
-            Log.e(TAG, e.toString());
-        }
+        Log.d(TAG, "Serial Number: " + serialNumber);
 
         return serialNumber;
     }

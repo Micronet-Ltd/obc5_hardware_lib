@@ -1,10 +1,12 @@
 package micronet.hardware;
 
+import android.os.Build;
 import android.util.Log;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import micronet.hardware.exception.MicronetHardwareException;
@@ -20,6 +22,61 @@ public class MicronetHardwareTest {
     @Before
     public void setUp() throws Exception {
         micronetHardware = MicronetHardware.getInstance();
+    }
+
+    @Test
+    public void multiThreadedSingleInstanceTest() {
+
+        ArrayList<Thread> list = new ArrayList<Thread>();
+
+        for(int i = 0; i < 10; i++){
+            final int threadNumber = i;
+
+            list.add(new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Log.d(TAG, "Thread " + threadNumber + " started.");
+                    getAllAnalogInput();
+                    getAllPinInState();
+                    getAnalogInput();
+                    getFPGAVersion();
+                    getInputState();
+                    getLedStatus();
+                    getMCUVersion();
+                    getPowerUpIgnitionState();
+                    getRTCCalReg();
+                    getRTCDateTime();
+                    Log.d(TAG, "Thread " + threadNumber + " ended.");
+                }
+            }));
+        }
+
+        for(int i = 0; i < list.size(); i++){
+            list.get(i).start();
+        }
+
+        // Delay to make sure threads start
+        try {
+            Thread.sleep(400);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        boolean continueChecking = true;
+        while(continueChecking){
+            for(int i = 0; i < list.size(); i++){
+                if(!list.get(i).isAlive()){
+                    list.remove(i);
+                }
+
+                if(list.size() == 0){
+                    continueChecking = false;
+                    break;
+                }
+            }
+        }
+
+        Log.d(TAG, "Multi-Threaded test finished.");
     }
 
     @Test
