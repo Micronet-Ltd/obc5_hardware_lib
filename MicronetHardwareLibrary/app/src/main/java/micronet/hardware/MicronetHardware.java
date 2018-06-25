@@ -372,7 +372,7 @@ public final class MicronetHardware {
     /**
      * Checks if the RTC battery is good, bad or not present. This function reads the register bit on the RTC to determine whether the RTC is good or bad.
      *
-     * @return "Good" or "Low or not present" depending on the battery state.
+     * @return "Good" or "Bad" depending on the battery state.
      *
      * @throws MicronetHardwareException if there is an error checking the value.
      */

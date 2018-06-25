@@ -289,16 +289,19 @@ int set_rtc_reg_dbg(int * fd, uint8_t address, uint8_t data)
 	return set_command(fd, req, sizeof(req));
 }
 
-bool check_rtc_battery(int * fd)
+int check_rtc_battery(int * fd, int * battery_state)
 {
 	uint8_t address = RTC_FLAGS_ADDR;
 	uint8_t flags = 0;
-	get_rtc_reg_dbg(fd, address, &flags);
+    int result = get_rtc_reg_dbg(fd, address, &flags);
 	if (flags & 0x10)
 	{
-		return false;
-	}
-	return true;
+        *battery_state = 0;
+	}else{
+        *battery_state = 1;
+    }
+
+    return result;
 }
 
 /* get_gpio_state_dbg: get MCU GPIO, be careful, gpio needs to be valid */

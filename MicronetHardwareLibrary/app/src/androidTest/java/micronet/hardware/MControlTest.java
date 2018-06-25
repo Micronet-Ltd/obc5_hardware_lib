@@ -206,10 +206,13 @@ public class MControlTest {
 
     @Test
     public void check_rtc_battery() {
-        String batteryStatus = mControl.check_rtc_battery();
-        Log.d(TAG, "RTC Battery Status: " + batteryStatus);
-
-
+        try{
+            String batteryStatus = mControl.check_rtc_battery();
+            Log.d(TAG, "RTC Battery Status: " + batteryStatus);
+        }catch (MicronetHardwareException e){
+            Log.e(TAG, e.toString());
+            fail();
+        }
     }
 
     @Test
