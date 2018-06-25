@@ -99,19 +99,30 @@ public final class MicronetHardware {
     private static MControl mcontrol = null;
 
     /**
+     * Lock to allow multithreaded use of MicronetHardware.
+     */
+    private static final Object lock = new Object();
+
+    /**
+     * Following singleton design, don't allow instantiation of Micronet Hardware.
+     */
+    private MicronetHardware(){}
+
+    /**
      * @return The singleton instance of MicronetHardware
      */
     public static MicronetHardware getInstance() {
+        synchronized(lock) {
+            if (instance == null) {
+                instance = new MicronetHardware();
+            }
 
-        if (instance == null) {
-            instance = new MicronetHardware();
+            if(mcontrol == null){
+                mcontrol = new MControl();
+            }
+
+            return instance;
         }
-
-        if(mcontrol == null){
-            mcontrol = new MControl();
-        }
-
-        return instance;
     }
 
     /**
@@ -138,8 +149,11 @@ public final class MicronetHardware {
     public int getAnalogInput(int inputType) {
         int retval = -1;
 
-        // Use MControl to get the adc voltage
-        retval = mcontrol.get_adc_or_gpi_voltage(inputType);
+        synchronized (lock){
+            // Use MControl to get the adc voltage
+            retval = mcontrol.get_adc_or_gpi_voltage(inputType);
+        }
+
 
         Log.d(TAG, inputType + ": " + retval);
 
@@ -171,21 +185,18 @@ public final class MicronetHardware {
             retval[i] = -1;
         }
 
-        retval[0] = mcontrol.get_adc_or_gpi_voltage(kADC_ANALOG_IN1);
-        if (retval[0] == -1){
-            return retval;
+        // Loop through all, if error then return early
+        synchronized (lock){
+            for(int i = 0; i < 12; i++){
+                retval[i] = mcontrol.get_adc_or_gpi_voltage(i);
+
+                // If -1 returned, then not able to communicate with mcu properly.
+                if(retval[i] == -1){
+                    Log.d(TAG, Arrays.toString(retval));
+                    return retval;
+                }
+            }
         }
-        retval[1] = mcontrol.get_adc_or_gpi_voltage(kADC_GPIO_IN1);
-        retval[2] = mcontrol.get_adc_or_gpi_voltage(kADC_GPIO_IN2);
-        retval[3] = mcontrol.get_adc_or_gpi_voltage(kADC_GPIO_IN3);
-        retval[4] = mcontrol.get_adc_or_gpi_voltage(kADC_GPIO_IN4);
-        retval[5] = mcontrol.get_adc_or_gpi_voltage(kADC_GPIO_IN5);
-        retval[6] = mcontrol.get_adc_or_gpi_voltage(kADC_GPIO_IN6);
-        retval[7] = mcontrol.get_adc_or_gpi_voltage(kADC_GPIO_IN7);
-        retval[8] = mcontrol.get_adc_or_gpi_voltage(kADC_POWER_IN);
-        retval[9] = mcontrol.get_adc_or_gpi_voltage(kADC_POWER_VCAP);
-        retval[10] = mcontrol.get_adc_or_gpi_voltage(kADC_TEMPERATURE);
-        retval[11] = mcontrol.get_adc_or_gpi_voltage(kADC_CABLE_TYPE);
 
         Log.d(TAG, Arrays.toString(retval));
 
@@ -212,8 +223,10 @@ public final class MicronetHardware {
     public int getInputState(int inputType) {
         int retval = -1;
 
-        // GPIO Inputs match to 692 to 699.
-        retval = mcontrol.get_gpio_value(inputType + 692);
+        synchronized (lock){
+            // GPIO Inputs match to 692 to 699.
+            retval = mcontrol.get_gpio_value(inputType + 692);
+        }
 
         Log.d(TAG, inputType + ": " + retval);
 
@@ -241,18 +254,18 @@ public final class MicronetHardware {
             retval[i] = -1;
         }
 
-        // GPIO Inputs match to 692 to 699.
-        retval[0] = mcontrol.get_gpio_value(kADC_ANALOG_IN1 + 692);
-        if (retval[0] == -1){
-            return retval;
+        // Loop through all, if error then return early
+        synchronized (lock){
+            for(int i = 0; i < 8; i++){
+                retval[i] = mcontrol.get_gpio_value(i + 692);
+
+                // If -1 returned, then not able to communicate with mcu properly.
+                if(retval[i] == -1){
+                    Log.d(TAG, Arrays.toString(retval));
+                    return retval;
+                }
+            }
         }
-        retval[1] = mcontrol.get_gpio_value(kADC_GPIO_IN1 + 692);
-        retval[2] = mcontrol.get_gpio_value(kADC_GPIO_IN2 + 692);
-        retval[3] = mcontrol.get_gpio_value(kADC_GPIO_IN3 + 692);
-        retval[4] = mcontrol.get_gpio_value(kADC_GPIO_IN4 + 692);
-        retval[5] = mcontrol.get_gpio_value(kADC_GPIO_IN5 + 692);
-        retval[6] = mcontrol.get_gpio_value(kADC_GPIO_IN6 + 692);
-        retval[7] = mcontrol.get_gpio_value(kADC_GPIO_IN7 + 692);
 
         Log.d(TAG, Arrays.toString(retval));
 
@@ -278,7 +291,9 @@ public final class MicronetHardware {
     public int getPowerUpIgnitionState() {
         int retval = -1;
 
-        retval = mcontrol.get_power_on_reason();
+        synchronized (lock){
+            retval = mcontrol.get_power_on_reason();
+        }
 
         Log.d(TAG, "Power on reason: " + retval);
 
@@ -293,7 +308,9 @@ public final class MicronetHardware {
      * @throws MicronetHardwareException if there is an error setting the value.
      */
     public void SetDelayedPowerDownTime(int timeInSeconds) throws MicronetHardwareException{
-        mcontrol.set_device_power_off(timeInSeconds);
+        synchronized (lock){
+            mcontrol.set_device_power_off(timeInSeconds);
+        }
     }
 
     /**
@@ -303,7 +320,9 @@ public final class MicronetHardware {
      * @throws MicronetHardwareException if there is an error getting the value.
      */
     public String getMcuVersion() throws MicronetHardwareException{
-        return mcontrol.get_mcu_version();
+        synchronized (lock){
+            return mcontrol.get_mcu_version();
+        }
     }
 
     /**
@@ -313,7 +332,9 @@ public final class MicronetHardware {
      * @throws MicronetHardwareException if there is an error getting the value.
      */
     public String getFpgaVersion() throws MicronetHardwareException{
-        return mcontrol.get_fpga_version();
+        synchronized (lock){
+            return mcontrol.get_fpga_version();
+        }
     }
 
     /**
@@ -327,7 +348,9 @@ public final class MicronetHardware {
      * @throws MicronetHardwareException if there is an error setting the value.
      */
     public void setLedStatus(int led, int brightness, int rgb) throws MicronetHardwareException{
-        mcontrol.set_led_status(led, brightness, rgb);
+        synchronized (lock){
+            mcontrol.set_led_status(led, brightness, rgb);
+        }
     }
 
     /**
@@ -341,7 +364,9 @@ public final class MicronetHardware {
      * @throws MicronetHardwareException if there is an error getting the value.
      */
     public LED getLedStatus(int led_num) throws MicronetHardwareException{
-        return mcontrol.get_led_status(led_num);
+        synchronized (lock){
+            return mcontrol.get_led_status(led_num);
+        }
     }
 
     /**
@@ -352,7 +377,9 @@ public final class MicronetHardware {
      * @throws MicronetHardwareException if there is an error checking the value.
      */
     public String checkRtcBattery() throws MicronetHardwareException{
-        return mcontrol.check_rtc_battery();
+        synchronized (lock){
+            return mcontrol.check_rtc_battery();
+        }
     }
 
     /**
@@ -362,7 +389,9 @@ public final class MicronetHardware {
      * @throws MicronetHardwareException if there is an error getting the value.
      */
     public String getRtcDateTime() throws MicronetHardwareException{
-        return mcontrol.get_rtc_date_time();
+        synchronized (lock){
+            return mcontrol.get_rtc_date_time();
+        }
     }
 
     /**
@@ -376,7 +405,9 @@ public final class MicronetHardware {
      * @throws MicronetHardwareException if there is an error setting the value.
      */
     public void setRtcDateTime(String dateTime) throws MicronetHardwareException{
-        mcontrol.set_rtc_date_time(dateTime);
+        synchronized (lock){
+            mcontrol.set_rtc_date_time(dateTime);
+        }
     }
 
     /**
@@ -387,7 +418,9 @@ public final class MicronetHardware {
      * @throws MicronetHardwareException if there is an error getting the value.
      */
     public int[] getRtcCalReg() throws MicronetHardwareException{
-        return mcontrol.get_rtc_cal_reg();
+        synchronized (lock){
+            return mcontrol.get_rtc_cal_reg();
+        }
     }
 
 }

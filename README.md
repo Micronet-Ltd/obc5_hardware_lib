@@ -1,47 +1,96 @@
-# obc5_hardware_lib
-Hardware library to access OBC5.
+# Using the Micronet Hardware Library 
 
-## Setting up Android Studio/Testing
--------------------------------------
+#### How to use the .aar file with your project
+Follow directions located here https://stackoverflow.com/a/34919810.
 
-### Installing Android Studio
-* Go to https://developer.android.com/studio/ and click “Download Android Studio”. Install Android Studio. 
-* Follow the video for installing here: https://developer.android.com/studio/install .
+#### How to get an instance of the Micronet Hardware Library
+Use “MicronetHardware.getInstance()” to get a Micronet Hardware object. 
 
-### Installing Git
-* Go to https://git-scm.com/downloads and click “Windows” to download Git.
-* Run .exe file to install Git. “Next” through all prompts. Then hit “Install”.
+```java
+MicronetHardware micronetHardware = MicronetHardware.getInstance();
+```
+    
+From there, use that object to call the other available functions. 
 
-### Download the sources for the OBC5 Micronet Hardware Library
-* Click Windows Key + R. Type “cmd” and hit enter.
-* Change directory to the place where you want to download the sources.
-* Typing “dir” will display the files/folder in your current directory.
-* Typing “cd ..” will take you up a level out of your current folder.
-* If there is a folder in the folder you currently are in (for example if the folder is called “myFolder”, then type “cd myFolder” to go into that folder.
-* In cmd enter “git clone https://github.com/Micronet-Ltd/obc5_hardware_lib.git”. The sources will be downloaded to a folder named “obc5_hardware_lib” in the folder you are currently in. 
-* In cmd enter “cd obc5_hardware_lib” to go into the folder you just downloaded.
-* In cmd enter “git checkout develop” to switch to the development branch from the master branch.
+```java
+try{
+    String mcuVersion = micronetHardware.getMcuVersion();
+    String fpgaVersion = micronetHardware.getFpgaVersion();
+    String rtcDateTime = micronetHardware.getRtcDateTime();
+} catch (MicronetHardwareException e) {
+    Log.e(TAG, e.toString());
+}
+```
 
-### Open the Project with Android Studio
-* In Android Studio, click to open a new project. 
-* Navigate to the folder where the “obc5_hardware_lib” folder is located. In the folder there will be a project folder called “MicronetHardwareLibrary”, select it. 
-* Click “Ok” to open the project. Android Studio will take a few minutes to load the project.
-* You might be prompted to download extra files for Android Studio. You don’t need to download any emulators, but download the other updates (usually something like build tools or sdk versions). 
-* From the top toolbar, click “Build”->”Make Project”. The project should build without errors. If there are errors, then it is likely that Android Studio will direct you to download some files you need. If you can’t get the project to build without errors then send me an email with a description and screenshot of the errors. If we need to, we can also set up a team viewer to help set it up.
+#### Available Fields
+| Name | Description |
+|------|-------------|
+| kADC_ANALOG_IN1 | Constant describing ignition. |
+| kADC_CABLE_TYPE | Constant describing cable type. |
+| kADC_GPIO_IN1 | Constant describing gpio input 1. |
+| kADC_GPIO_IN2 | Constant describing gpio input 2. |
+| kADC_GPIO_IN3 | Constant describing gpio input 3. |
+| kADC_GPIO_IN4 | Constant describing gpio input 4. |
+| kADC_GPIO_IN5 | Constant describing gpio input 5. |
+| kADC_GPIO_IN6 | Constant describing gpio input 6. |
+| kADC_GPIO_IN7 | Constant describing gpio input 7. |
+| kADC_POWER_IN | Constant describing battery voltage. |
+| kADC_POWER_VCAP | Constant describing the super cap. |
+| kADC_TEMPERATURE | Constant describing the temperature sensor. |
+| TYPE_IGNITION | A constant describing ignition signal id. Same as kADC_ANALOG_IN1 |
 
-### Opening the Android Tests
-* In the top-left corner of the screen, make sure that this dropdown selector is set to “Android Instrumented Tests”. If it is not, then click it and select “Android Instrumented Tests”.
-* Right below the dropdown, click the arrow to the left of the “app” folder. Then click the arrows all the way down to the bottom level.
-* Double click on “MicronetHardwareTest” to display it.
+#### Available Methods
+| Name | Description |
+|------|-------------|
+| checkRtcBattery() | Checks if the RTC battery is good, bad or not present. |
+| getAllAnalogInput() | Gets analog input state of all A2D input signals. |
+| getAllPinInState() | Gets all input pin state of an Automotive I/O signal. |
+| getAnalogInput(int inputType) | Gets analog input state of an A2D input signal. |
+| getFpgaVersion() | Gets the fpga version. |
+| getInputState(int inputType) | Gets input state of an Automotive input signal. |
+| getInstance()  | Gets an instance of MicronetHardware. |
+| getLedStatus(int led_num) | To get the LED status, the following command can be sent. |
+| getMcuVersion() | Gets the MCU version. |
+| getPowerUpIgnitionState() | Get Power up ignition connected I/O state. |
+| getRtcCalReg() | Get the digital and analog rtc calibration registers. |
+| getRtcDateTime() | Gets the MCU rtc date and time. |
+| SetDelayedPowerDownTime(int timeInSeconds) | Sets Delayed Power down Time in seconds. |
+| setLedStatus(int led, int brightness, int rgb) | Set an LEDs brightness and color. |
+| setRtcDateTime(java.lang.String dateTime) | Sets the MCU rtc date and time. |
 
-### Running the Android Tests
-* To run a particular test file, open it the main editor. Near the top of the file next to the line numbers by the class name will be a double green arrow.
-* Click the double arrow and select “Run”. You will be prompted which device you want to run it on. Make sure that your device is connected over ADB through the device’s WIFI Hotspot and select that device in the prompt. 
-* The results will appear on the bottom half of the window. Individual tests are displayed on the left and they will have a green arrow if they passed and a red if they failed. 
-* The tests are still in development. Most of the tests don’t do anything yet, so by default they will pass. 
+#### Example to get Ignition State and Voltage
+```java
+int ignitionVoltage = micronetHardware.getAnalogInput(MicronetHardware.TYPE_IGNITION);
+int ignitionState = micronetHardware.getInputState(MicronetHardware.TYPE_IGNITION);
+```
 
-### Understanding and Creating Android Tests
-* In each test file there are individual tests defined by the functions in the file.
-* Each test must be designed as above with a different name; the inside of the function should be different because that is what happens when the test is run. 
-* Asserts are used to make the test pass or fail. If the test is empty, then it will pass by default. Above you can see that if the return String mcuVersion matches a certain regex then the test will pass, but if it doesn’t then it will fail. There are various types of assert functions that can be found here https://developer.android.com/reference/junit/framework/Assert . 
-* In most of the assert functions you can also add a message that will be printed out if the test fails.
+#### Other Example Usage
+```java
+int analog_in1 = micronetHardware.getAnalogInput(MicronetHardware.kADC_ANALOG_IN1);
+int gpio_in1 = micronetHardware.getAnalogInput(MicronetHardware.kADC_GPIO_IN1);
+int gpio_in2 = micronetHardware.getAnalogInput(MicronetHardware.kADC_GPIO_IN2);
+int gpio_in3 = micronetHardware.getAnalogInput(MicronetHardware.kADC_GPIO_IN3);
+int gpio_in4 = micronetHardware.getAnalogInput(MicronetHardware.kADC_GPIO_IN4);
+int gpio_in5 = micronetHardware.getAnalogInput(MicronetHardware.kADC_GPIO_IN5);
+int gpio_in6 = micronetHardware.getAnalogInput(MicronetHardware.kADC_GPIO_IN6);
+int gpio_in7 = micronetHardware.getAnalogInput(MicronetHardware.kADC_GPIO_IN7);
+int power_in = micronetHardware.getAnalogInput(MicronetHardware.kADC_POWER_IN);
+int power_vcap = micronetHardware.getAnalogInput(MicronetHardware.kADC_POWER_VCAP);
+int temperature = micronetHardware.getAnalogInput(MicronetHardware.kADC_TEMPERATURE);
+int cable_type = micronetHardware.getAnalogInput(MicronetHardware.kADC_CABLE_TYPE);
+
+int analog_in1 = micronetHardware.getInputState(MicronetHardware.kADC_ANALOG_IN1);
+int gpio_in1 = micronetHardware.getInputState(MicronetHardware.kADC_GPIO_IN1);
+int gpio_in2 = micronetHardware.getInputState(MicronetHardware.kADC_GPIO_IN2);
+int gpio_in3 = micronetHardware.getInputState(MicronetHardware.kADC_GPIO_IN3);
+int gpio_in4 = micronetHardware.getInputState(MicronetHardware.kADC_GPIO_IN4);
+int gpio_in5 = micronetHardware.getInputState(MicronetHardware.kADC_GPIO_IN5);
+int gpio_in6 = micronetHardware.getInputState(MicronetHardware.kADC_GPIO_IN6);
+int gpio_in7 = micronetHardware.getInputState(MicronetHardware.kADC_GPIO_IN7);
+```
+
+##### Look at Javadocs for additional information on the library
+
+
+
+

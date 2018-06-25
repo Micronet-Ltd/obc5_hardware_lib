@@ -1,6 +1,5 @@
 package micronet.hardware;
 
-import android.os.Build;
 import android.util.Log;
 
 import org.junit.Before;
@@ -11,11 +10,14 @@ import java.util.Arrays;
 
 import micronet.hardware.exception.MicronetHardwareException;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-public class MicronetHardwareTest {
+public class MicronetHardwareTestSmartCradle {
 
-    protected static final String TAG = "MicronetHardwareTest";
+    private static final String TAG = "MicronetHardwareTest";
 
     private static MicronetHardware micronetHardware = null;
 
@@ -105,7 +107,7 @@ public class MicronetHardwareTest {
         assertTrue(gpio_in6 > 2700 && gpio_in6 < 3300);
         assertTrue(gpio_in7 > 2700 && gpio_in7 < 3300);
         assertTrue(power_in > 11000 && power_in < 23000);
-        assertTrue(power_vcap > 4000 && power_vcap < 6000);
+        assertTrue(power_vcap >= 0 && power_vcap < 6000);
         assertTrue(temperature > 500 && temperature < 1500);
         assertTrue(cable_type > 2000 && cable_type < 4000);
     }
@@ -125,7 +127,7 @@ public class MicronetHardwareTest {
         assertTrue(returnArray[6] > 2700 && returnArray[6] < 3300);
         assertTrue(returnArray[7] > 2700 && returnArray[7] < 3300);
         assertTrue(returnArray[8] > 11000 && returnArray[8] < 23000);
-        assertTrue(returnArray[9] > 4000 && returnArray[9] < 6000);
+        assertTrue(returnArray[9] >= 0 && returnArray[9] < 6000);
         assertTrue(returnArray[10] > 500 && returnArray[10] < 1500);
         assertTrue(returnArray[11] > 2000 && returnArray[11] < 4000);
     }
@@ -349,7 +351,7 @@ public class MicronetHardwareTest {
             int[] rtcCalcReg = micronetHardware.getRtcCalReg();
             Log.d(TAG, "RTC CalcReg: " + Arrays.toString(rtcCalcReg));
 
-            assertTrue(rtcCalcReg[0] > 0);
+            assertTrue(rtcCalcReg[0] >= 0);
             assertTrue(rtcCalcReg[1] > 0);
         } catch (MicronetHardwareException e) {
             Log.e(TAG, e.toString());
