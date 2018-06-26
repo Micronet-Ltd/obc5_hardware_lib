@@ -44,7 +44,6 @@ public class GPIO {
             fileInputStream.close();
 
             String value = new String(b);
-            Log.d("GPIO", "GPIO " + gpioNumber + " Value: " + value);
 
             return Integer.valueOf(String.valueOf(value));
         }catch (Exception e){

@@ -1,14 +1,5 @@
 package micronet.hardware;
 
-import android.util.Log;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-
 import micronet.hardware.exception.MicronetHardwareException;
 
 /**
@@ -258,7 +249,6 @@ public class MControl {
         int resultCode = resultArr[0];
 
         if(resultCode >= 0){
-            Log.d("Micronet", "Battery State: " + resultArr[1]);
             int batteryState = resultArr[1];
             if(batteryState != 0){
                 return "Good";

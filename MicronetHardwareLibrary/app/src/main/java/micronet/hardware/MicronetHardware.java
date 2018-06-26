@@ -15,10 +15,6 @@
  */
 package micronet.hardware;
 
-import android.util.Log;
-
-import java.util.Arrays;
-
 import micronet.hardware.exception.MicronetHardwareException;
 
 /**
@@ -154,9 +150,6 @@ public final class MicronetHardware {
             retval = mcontrol.get_adc_or_gpi_voltage(inputType);
         }
 
-
-        Log.d(TAG, inputType + ": " + retval);
-
         return retval;
     }
 
@@ -192,13 +185,10 @@ public final class MicronetHardware {
 
                 // If -1 returned, then not able to communicate with mcu properly.
                 if(retval[i] == -1){
-                    Log.d(TAG, Arrays.toString(retval));
                     return retval;
                 }
             }
         }
-
-        Log.d(TAG, Arrays.toString(retval));
 
         return retval;
     }
@@ -227,8 +217,6 @@ public final class MicronetHardware {
             // GPIO Inputs match to 692 to 699.
             retval = mcontrol.get_gpio_value(inputType + 692);
         }
-
-        Log.d(TAG, inputType + ": " + retval);
 
         return retval;
     }
@@ -261,13 +249,10 @@ public final class MicronetHardware {
 
                 // If -1 returned, then not able to communicate with mcu properly.
                 if(retval[i] == -1){
-                    Log.d(TAG, Arrays.toString(retval));
                     return retval;
                 }
             }
         }
-
-        Log.d(TAG, Arrays.toString(retval));
 
         return retval;
     }
@@ -289,15 +274,9 @@ public final class MicronetHardware {
      * </pre>
      */
     public int getPowerUpIgnitionState() {
-        int retval = -1;
-
         synchronized (lock){
-            retval = mcontrol.get_power_on_reason();
+            return mcontrol.get_power_on_reason();
         }
-
-        Log.d(TAG, "Power on reason: " + retval);
-
-        return retval;
     }
 
     /**

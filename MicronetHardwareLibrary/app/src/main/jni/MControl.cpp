@@ -358,7 +358,7 @@ Java_micronet_hardware_MControl_jniCheckRTCBattery(JNIEnv *env, jobject instance
     int size = 2;
     jintArray ret = env->NewIntArray(size);
 
-    int battery_state = 0;
+    uint8_t battery_state = 0;
     int result = -1;
 
     int fd = iosocket_connect();
@@ -372,8 +372,7 @@ Java_micronet_hardware_MControl_jniCheckRTCBattery(JNIEnv *env, jobject instance
     tmp[1] = battery_state;
     env->SetIntArrayRegion(ret, 0, size, tmp);
 
-    // 0 indicates no response or bad RTC battery
-    //return battery_state != 0;
+    // If battery_state is 0 that indicates bad or not present RTC battery.
     return ret;
 }
 
