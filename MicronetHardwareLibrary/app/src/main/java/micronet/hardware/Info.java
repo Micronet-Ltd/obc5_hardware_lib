@@ -35,7 +35,7 @@ public class Info {
      * Format is YYYYMMDD.NUMBER.
      * For example 20150817.000 represents August 17th 2015 and minor version 0.
      */
-    public static final String VERSION = "20180625.000";
+    public static final String VERSION = "20180628.000";
 
     /**
      * Returns Serial Number of the device.
