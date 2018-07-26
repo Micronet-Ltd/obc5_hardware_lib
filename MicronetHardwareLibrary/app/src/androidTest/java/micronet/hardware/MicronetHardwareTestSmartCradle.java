@@ -47,7 +47,6 @@ public class MicronetHardwareTestSmartCradle {
                     getMCUVersion();
                     getPowerUpIgnitionState();
                     getRTCCalReg();
-                    getRTCDateTime();
                     Log.d(TAG, "Thread " + threadNumber + " ended.");
                 }
             }));
@@ -98,18 +97,18 @@ public class MicronetHardwareTestSmartCradle {
 
         // Check that values are in correct range
         // Correct range depends on input voltages to the device and the state of the device
-        assertTrue(analog_in1 > 11000 && analog_in1 < 23000);
-        assertTrue(gpio_in1 > 2700 && gpio_in1 < 3300);
-        assertTrue(gpio_in2 > 2700 && gpio_in2 < 3300);
-        assertTrue(gpio_in3 > 2700 && gpio_in3 < 3300);
-        assertTrue(gpio_in4 > 2700 && gpio_in4 < 3300);
-        assertTrue(gpio_in5 > 2700 && gpio_in5 < 3300);
-        assertTrue(gpio_in6 > 2700 && gpio_in6 < 3300);
-        assertTrue(gpio_in7 > 2700 && gpio_in7 < 3300);
-        assertTrue(power_in > 11000 && power_in < 23000);
-        assertTrue(power_vcap >= 0 && power_vcap < 6000);
-        assertTrue(temperature > 500 && temperature < 1500);
-        assertTrue(cable_type > 2000 && cable_type < 4000);
+        assertTrue("Return array value: " + analog_in1, analog_in1 > 11000 && analog_in1 < 23000);
+        assertTrue("Return array value: " + gpio_in1,gpio_in1 > 2700 && gpio_in1 < 3300);
+        assertTrue("Return array value: " + gpio_in2,gpio_in2 > 2700 && gpio_in2 < 3300);
+        assertTrue("Return array value: " + gpio_in3,gpio_in3 > 2700 && gpio_in3 < 3300);
+        assertTrue("Return array value: " + gpio_in4,gpio_in4 > 2700 && gpio_in4 < 3300);
+        assertTrue("Return array value: " + gpio_in5,gpio_in5 > 2700 && gpio_in5 < 3300);
+        assertTrue("Return array value: " + gpio_in6,gpio_in6 > 2700 && gpio_in6 < 3300);
+        assertTrue("Return array value: " + gpio_in7,gpio_in7 > 2700 && gpio_in7 < 3300);
+        assertTrue("Return array value: " + power_in,power_in > 11000 && power_in < 23000);
+        assertTrue("Return array value: " + power_vcap,power_vcap >= 0 && power_vcap < 6000);
+        assertTrue("Return array value: " + temperature,temperature > 500 && temperature < 1500);
+        assertTrue("Return array value: " + cable_type,cable_type > 2000 && cable_type < 4000);
     }
 
     @Test
@@ -118,18 +117,18 @@ public class MicronetHardwareTestSmartCradle {
 
         // Check that values are in correct range
         // Correct range depends on input voltages to the device and the state of the device
-        assertTrue(returnArray[0] > 11000 && returnArray[0] < 23000);
-        assertTrue(returnArray[1] > 2700 && returnArray[1] < 3300);
-        assertTrue(returnArray[2] > 2700 && returnArray[2] < 3300);
-        assertTrue(returnArray[3] > 2700 && returnArray[3] < 3300);
-        assertTrue(returnArray[4] > 2700 && returnArray[4] < 3300);
-        assertTrue(returnArray[5] > 2700 && returnArray[5] < 3300);
-        assertTrue(returnArray[6] > 2700 && returnArray[6] < 3300);
-        assertTrue(returnArray[7] > 2700 && returnArray[7] < 3300);
-        assertTrue(returnArray[8] > 11000 && returnArray[8] < 23000);
-        assertTrue(returnArray[9] >= 0 && returnArray[9] < 6000);
-        assertTrue(returnArray[10] > 500 && returnArray[10] < 1500);
-        assertTrue(returnArray[11] > 2000 && returnArray[11] < 4000);
+        assertTrue("Return array value: " + Arrays.toString(returnArray),returnArray[0] > 11000 && returnArray[0] < 23000);
+        assertTrue("Return array value: " + Arrays.toString(returnArray), returnArray[1] > 2700 && returnArray[1] < 3300);
+        assertTrue("Return array value: " + Arrays.toString(returnArray),returnArray[2] > 2700 && returnArray[2] < 3300);
+        assertTrue("Return array value: " + Arrays.toString(returnArray),returnArray[3] > 2700 && returnArray[3] < 3300);
+        assertTrue("Return array value: " + Arrays.toString(returnArray),returnArray[4] > 2700 && returnArray[4] < 3300);
+        assertTrue("Return array value: " + Arrays.toString(returnArray),returnArray[5] > 2700 && returnArray[5] < 3300);
+        assertTrue("Return array value: " + Arrays.toString(returnArray),returnArray[6] > 2700 && returnArray[6] < 3300);
+        assertTrue("Return array value: " + Arrays.toString(returnArray),returnArray[7] > 2700 && returnArray[7] < 3300);
+        assertTrue("Return array value: " + Arrays.toString(returnArray),returnArray[8] > 11000 && returnArray[8] < 23000);
+        assertTrue("Return array value: " + Arrays.toString(returnArray),returnArray[9] >= 0 && returnArray[9] < 6000);
+        assertTrue("Return array value: " + Arrays.toString(returnArray),returnArray[10] > 500 && returnArray[10] < 1500);
+        assertTrue("Return array value: " + Arrays.toString(returnArray),returnArray[11] > 2000 && returnArray[11] < 4000);
     }
 
     @Test
@@ -305,45 +304,45 @@ public class MicronetHardwareTestSmartCradle {
         }
     }
 
-    @Test
-    public void getRTCDateTime(){
-        try {
-            String rtcDateTime = micronetHardware.getRtcDateTime();
-            Log.d(TAG, "RTC DateTime: " + rtcDateTime);
-
-            // Make sure it matches the format of a rtc string
-            assertTrue(rtcDateTime.matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{2}"));
-        } catch (MicronetHardwareException e) {
-            Log.e(TAG, e.toString());
-            fail();
-        }
-    }
-
-    @Test
-    public void setRTCDateTime(){
-        try {
-            // Will set datetime to "1111-11-11 11:11:11.00"
-            micronetHardware.setRtcDateTime("1111-11-11 11:11:11.11");
-
-            String rtcDateTime = micronetHardware.getRtcDateTime();
-            Log.d(TAG, "RTC DateTime: " + rtcDateTime);
-
-            // Make sure it matches the format of a rtc string
-            assertTrue(rtcDateTime.matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{2}"));
-
-            // Will set datetime to "2011-01-20 05:34:22.00"
-            micronetHardware.setRtcDateTime("2011-01-20 05:34:22.55");
-
-            rtcDateTime = micronetHardware.getRtcDateTime();
-            Log.d(TAG, "RTC DateTime: " + rtcDateTime);
-
-            // Make sure it matches the format of a rtc string
-            assertTrue(rtcDateTime.matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{2}"));
-        } catch (MicronetHardwareException e) {
-            Log.e(TAG, e.toString());
-            fail();
-        }
-    }
+//    Smart cradle doesn't have this functionality
+//    @Test
+//    public void getRTCDateTime(){
+//        try {
+//            String rtcDateTime = micronetHardware.getRtcDateTime();
+//            Log.d(TAG, "RTC DateTime: " + rtcDateTime);
+//
+//            // Make sure it matches the format of a rtc string
+//            assertTrue(rtcDateTime.matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{2}"));
+//        } catch (MicronetHardwareException e) {
+//            Log.e(TAG, e.toString());
+//            fail();
+//        }
+//    }
+//    @Test
+//    public void setRTCDateTime(){
+//        try {
+//            // Will set datetime to "1111-11-11 11:11:11.00"
+//            micronetHardware.setRtcDateTime("1111-11-11 11:11:11.11");
+//
+//            String rtcDateTime = micronetHardware.getRtcDateTime();
+//            Log.d(TAG, "RTC DateTime: " + rtcDateTime);
+//
+//            // Make sure it matches the format of a rtc string
+//            assertTrue(rtcDateTime.matches("1111-11-11 11:11:\\d{2}\\.\\d{2}"));
+//
+//            // Will set datetime to "2011-01-20 05:34:22.00"
+//            micronetHardware.setRtcDateTime("2011-01-20 05:34:22.55");
+//
+//            rtcDateTime = micronetHardware.getRtcDateTime();
+//            Log.d(TAG, "RTC DateTime: " + rtcDateTime);
+//
+//            // Make sure it matches the format of a rtc string
+//            assertTrue(rtcDateTime.matches("2011-01-20 05:34:\\d{2}\\.\\d{2}"));
+//        } catch (MicronetHardwareException e) {
+//            Log.e(TAG, e.toString());
+//            fail();
+//        }
+//    }
 
     @Test
     public void getRTCCalReg(){
