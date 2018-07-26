@@ -327,7 +327,7 @@ public class MicronetHardwareTest {
             Log.d(TAG, "RTC DateTime: " + rtcDateTime);
 
             // Make sure it matches the format of a rtc string
-            assertTrue(rtcDateTime.matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{2}"));
+            assertTrue(rtcDateTime.matches("1111-11-11 11:11:\\d{2}\\.\\d{2}"));
 
             // Will set datetime to "2011-01-20 05:34:22.00"
             micronetHardware.setRtcDateTime("2011-01-20 05:34:22.55");
@@ -336,7 +336,7 @@ public class MicronetHardwareTest {
             Log.d(TAG, "RTC DateTime: " + rtcDateTime);
 
             // Make sure it matches the format of a rtc string
-            assertTrue(rtcDateTime.matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{2}"));
+            assertTrue(rtcDateTime.matches("2011-01-20 05:34:\\d{2}\\.\\d{2}"));
         } catch (MicronetHardwareException e) {
             Log.e(TAG, e.toString());
             fail();
