@@ -15,14 +15,12 @@
  */
 package micronet.hardware;
 
-import android.util.Log;
-
-import java.util.Arrays;
-
 import micronet.hardware.exception.MicronetHardwareException;
 
 /**
- *  Micronet hardware-specific access class for the OBC5.
+ *  Micronet Hardware specific access class.
+ *
+ *  To get a MicronetHardware object use MicronetHardware.getInstance().
  */
 public final class MicronetHardware {
 
@@ -128,6 +126,9 @@ public final class MicronetHardware {
     /**
      * Gets analog input state of an A2D input signal.
      *
+     * If the input is below 6000mv then it is considered low. If it is above 7000mv then it is
+     * considered high. If it is between 6000-7000mv then it retains its old state.
+     *
      * @return Input state voltage level in mV.
      * If there is an error getting the value, the value
      * of -1 is returned.
@@ -154,14 +155,14 @@ public final class MicronetHardware {
             retval = mcontrol.get_adc_or_gpi_voltage(inputType);
         }
 
-
-        Log.d(TAG, inputType + ": " + retval);
-
         return retval;
     }
 
     /**
      * Gets analog input state of all A2D input signals.
+     *
+     * If the input is below 6000mv then it is considered low. If it is above 7000mv then it is
+     * considered high. If it is between 6000-7000mv then it retains its old state.
      *
      * @return An int[12] of input state voltage level in mV.
      *       Order of voltages is this way:
@@ -192,19 +193,20 @@ public final class MicronetHardware {
 
                 // If -1 returned, then not able to communicate with mcu properly.
                 if(retval[i] == -1){
-                    Log.d(TAG, Arrays.toString(retval));
                     return retval;
                 }
             }
         }
-
-        Log.d(TAG, Arrays.toString(retval));
 
         return retval;
     }
 
     /**
      * Gets input state of an Automotive input signal.
+     *
+     * NOTE: If this function is used with the smart cradle and the smart cradle is undocked, then
+     * it will return the last known state before it was undocked, not the current state. Therefore,
+     * it should not be used if the device is undocked.
      *
      * @return 1 when signal state is HIGH, 0 otherwise. In case of error, -1 is
      *         returned.
@@ -228,13 +230,16 @@ public final class MicronetHardware {
             retval = mcontrol.get_gpio_value(inputType + 692);
         }
 
-        Log.d(TAG, inputType + ": " + retval);
-
         return retval;
     }
 
     /**
      * Gets all input pin state of an Automotive I/O signal.
+     *
+     * NOTE: If this function is used with the smart cradle and the smart cradle is undocked, then
+     * it will return the last known state before it was undocked, not the current state. Therefore,
+     * it should not be used if the device is undocked.
+     *
      *          {@link #kADC_ANALOG_IN1},
      *  		{@link #kADC_GPIO_IN1},
      *  		{@link #kADC_GPIO_IN2},
@@ -261,13 +266,10 @@ public final class MicronetHardware {
 
                 // If -1 returned, then not able to communicate with mcu properly.
                 if(retval[i] == -1){
-                    Log.d(TAG, Arrays.toString(retval));
                     return retval;
                 }
             }
         }
-
-        Log.d(TAG, Arrays.toString(retval));
 
         return retval;
     }
@@ -289,15 +291,9 @@ public final class MicronetHardware {
      * </pre>
      */
     public int getPowerUpIgnitionState() {
-        int retval = -1;
-
         synchronized (lock){
-            retval = mcontrol.get_power_on_reason();
+            return mcontrol.get_power_on_reason();
         }
-
-        Log.d(TAG, "Power on reason: " + retval);
-
-        return retval;
     }
 
     /**
@@ -372,7 +368,7 @@ public final class MicronetHardware {
     /**
      * Checks if the RTC battery is good, bad or not present. This function reads the register bit on the RTC to determine whether the RTC is good or bad.
      *
-     * @return "Good" or "Low or not present" depending on the battery state.
+     * @return "Good" or "Bad" depending on the battery state.
      *
      * @throws MicronetHardwareException if there is an error checking the value.
      */

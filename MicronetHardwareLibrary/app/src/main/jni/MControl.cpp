@@ -353,18 +353,27 @@ Java_micronet_hardware_MControl_jniGetGPIOStateDBG(JNIEnv *env, jobject instance
  * returns false if RTC battery is bad or register could not be read.
  * returns true if RTC battery is good.
  */
-JNIEXPORT jboolean JNICALL
+JNIEXPORT jintArray JNICALL
 Java_micronet_hardware_MControl_jniCheckRTCBattery(JNIEnv *env, jobject instance) {
-    int result = 0;
+    int size = 2;
+    jintArray ret = env->NewIntArray(size);
+
+    uint8_t battery_state = 0;
+    int result = -1;
 
     int fd = iosocket_connect();
     if (fd != 0) {
-        result = check_rtc_battery(&fd);
+        result = check_rtc_battery(&fd, &battery_state);
         iosocket_disconnect(&fd);
     }
 
-    // 0 indicates no response or bad RTC battery
-    return result != 0;
+    jint tmp[2];
+    tmp[0] = result;
+    tmp[1] = battery_state;
+    env->SetIntArrayRegion(ret, 0, size, tmp);
+
+    // If battery_state is 0 that indicates bad or not present RTC battery.
+    return ret;
 }
 
 JNIEXPORT void JNICALL

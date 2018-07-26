@@ -1,12 +1,5 @@
 package micronet.hardware;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-
 import micronet.hardware.exception.MicronetHardwareException;
 
 /**
@@ -33,7 +26,7 @@ public class MControl {
     private native static int jniSetRTCCalReg();
     private native static int jniGetRTCRegDBG();
     private native static int jniSetRTCRegDBG();
-    private native static boolean jniCheckRTCBattery();
+    private native static int[] jniCheckRTCBattery();
     private native static void jniSetSysPropPowerCtlShutdown();
     private native static int jniSetGPIOStateDBG(int gpio_num, int gpio_value);
     private native static int[] jniGetGPIOStateDBG(int gpio_num);
@@ -250,11 +243,20 @@ public class MControl {
      * @return "Good" or "Bad" depending on the battery state.
      */
 
-    protected String check_rtc_battery() {
-        if (jniCheckRTCBattery()) {
-            return "Good";
-        } else {
-            return "Bad";
+    protected String check_rtc_battery() throws MicronetHardwareException{
+        int[] resultArr = jniCheckRTCBattery();
+
+        int resultCode = resultArr[0];
+
+        if(resultCode >= 0){
+            int batteryState = resultArr[1];
+            if(batteryState != 0){
+                return "Good";
+            }else{
+                return "Bad";
+            }
+        }else{
+            throw new MicronetHardwareException("Error checking the rtc battery", resultCode);
         }
     }
 
