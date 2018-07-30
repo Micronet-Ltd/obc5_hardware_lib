@@ -1,5 +1,5 @@
 # Using the Micronet Hardware Library 
-The Micronet Hardware Interface is used to get information from the device such as the GPIOs state and voltage and other info about the device. For more detailed information about the library, refer to the Javadocs. 
+The Micronet Hardware Library is used to get information from the device such as the GPIOs state and voltage and other info about the device. For more detailed information about the library, refer to the Javadocs. 
 
 Currently the Micronet Hardware Library should only be used in one app on the device at a time. 
 
