@@ -1,4 +1,7 @@
 # Using the Micronet Hardware Library 
+The Micronet Hardware Interface is used to get information from the device such as the GPIOs state and voltage and other info about the device. For more detailed information about the library, refer to the Javadocs. 
+
+Currently the Micronet Hardware Library should only be used in one app on the device at a time. 
 
 #### How to use the .aar file with your project
 Follow directions located here https://stackoverflow.com/a/34919810.
@@ -88,9 +91,3 @@ int gpio_in5 = micronetHardware.getInputState(MicronetHardware.kADC_GPIO_IN5);
 int gpio_in6 = micronetHardware.getInputState(MicronetHardware.kADC_GPIO_IN6);
 int gpio_in7 = micronetHardware.getInputState(MicronetHardware.kADC_GPIO_IN7);
 ```
-
-##### Look at Javadocs for additional information on the library
-
-
-
-
