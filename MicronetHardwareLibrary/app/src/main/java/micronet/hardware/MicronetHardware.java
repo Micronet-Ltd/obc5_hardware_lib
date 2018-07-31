@@ -91,6 +91,25 @@ public final class MicronetHardware {
      */
     public static final int TYPE_IGNITION = kADC_ANALOG_IN1;
 
+    /**
+     * Constant describing gpio output 0.
+     */
+    public static final int OUTPUT_0 = 0;
+
+    /**
+     * Constant describing gpio output 1.
+     */
+    public static final int OUTPUT_1 = 1;
+
+    /**
+     * Constant describing gpio output 2.
+     */
+    public static final int OUTPUT_2 = 2;
+
+    /**
+     * Constant describing gpio output 3.
+     */
+    public static final int OUTPUT_3 = 3;
 
     private static MicronetHardware instance = null;
 
@@ -272,6 +291,30 @@ public final class MicronetHardware {
         }
 
         return retval;
+    }
+
+    /**
+     * Sets the output state of one of the gpio outputs. To use this function you need to have OS 0.1.17.0 or above.
+     *
+     * NOTE: If used with the SmartTab, changing the outputs while the device is undocked will have no effect on the outputs. Only change the output
+     * state while the device is plugged in. It is not possible to get the output state, only to set it. Also, A001 SmartHub devices do not have
+     * outputs.
+     *
+     * @param output The output can be one of the four outputs:
+     *          {@link #OUTPUT_0},
+     *  		{@link #OUTPUT_1},
+     *  		{@link #OUTPUT_2},
+     *          {@link #OUTPUT_3}
+     *
+     * @param validateOutputStateAfterSet If true, then it will check if the output state is set properly. This takes usually at least 100 ms and
+     * can take up to 500ms before it times out. If false, then it will not check if the output state is set properly. Will return quickly.
+     *
+     * @throws MicronetHardwareException If there was an error changing the output state.
+     */
+    public void setOutputState(int output, boolean state, boolean validateOutputStateAfterSet) throws MicronetHardwareException{
+        synchronized (lock){
+            mcontrol.set_gpio_value(output + 700, state, validateOutputStateAfterSet);
+        }
     }
 
     /**

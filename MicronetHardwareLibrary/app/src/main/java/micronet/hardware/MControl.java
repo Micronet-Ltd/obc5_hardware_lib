@@ -1,5 +1,6 @@
 package micronet.hardware;
 
+import android.renderscript.Allocation.MipmapControl;
 import micronet.hardware.exception.MicronetHardwareException;
 
 /**
@@ -296,6 +297,22 @@ public class MControl {
     protected int get_gpio_value(int gpioNumber){
         GPIO gpio = new GPIO(gpioNumber);
         return gpio.getValue();
+    }
+
+    /**
+     * Set the GPIO state for an output GPIO.
+     * @param gpioNumber The gpio number you want to get the value of.
+     * @return The value of that GPIO.
+     */
+    protected void set_gpio_value(int gpioNumber, boolean state, boolean validateOutputStateAfterSet) throws MicronetHardwareException{
+        GPIO gpio = new GPIO(gpioNumber);
+
+        // Set gpio output state
+        boolean result = gpio.setValue(gpioNumber, state, validateOutputStateAfterSet);
+
+        if(!result){
+            throw new MicronetHardwareException("Error setting gpio state", -5);
+        }
     }
 
     /**
