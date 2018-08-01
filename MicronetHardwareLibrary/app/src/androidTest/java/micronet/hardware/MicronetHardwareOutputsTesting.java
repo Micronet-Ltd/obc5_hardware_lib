@@ -40,10 +40,15 @@ public class MicronetHardwareOutputsTesting {
 
     @Test
     public void allOutputsOn() {
+        long startTime = System.currentTimeMillis();
         output0On();
         output1On();
         output2On();
         output3On();
+        long endTime = System.currentTimeMillis();
+
+        long totalTime = endTime - startTime;
+        Log.d(TAG, "allOutputsOn() took " + totalTime + " ms to run");
     }
 
     @Test
@@ -55,9 +60,33 @@ public class MicronetHardwareOutputsTesting {
     }
 
     @Test
+    public void timingSingleSet(){
+        ArrayList<Long> times = new ArrayList<>();
+
+        for(int i = 0; i < 50; i++){
+            long startTime = System.currentTimeMillis();
+            output0On();
+            long endTime = System.currentTimeMillis();
+
+            long totalTime = endTime - startTime;
+            times.add(totalTime);
+            Log.d(TAG, "allOutputsOn() took " + totalTime + " ms to run");
+        }
+
+        // Calculate average value
+        long timeSum = 0;
+        for(Long time: times){
+            timeSum += time;
+        }
+        long timeAverage = timeSum/50;
+
+        Log.d(TAG, "Average time it takes to run outputOn(): " + timeAverage + " ms");
+    }
+
+    @Test
     public void output0On() {
         try {
-            micronetHardware.setOutputState(MicronetHardware.OUTPUT_0, true, false);
+            micronetHardware.setOutputState(MicronetHardware.OUTPUT_0, true, true);
         } catch (MicronetHardwareException e) {
             Log.e(TAG, e.toString());
             fail();
@@ -67,7 +96,7 @@ public class MicronetHardwareOutputsTesting {
     @Test
     public void output0Off() {
         try {
-            micronetHardware.setOutputState(MicronetHardware.OUTPUT_0, false, false);
+            micronetHardware.setOutputState(MicronetHardware.OUTPUT_0, false, true);
         } catch (MicronetHardwareException e) {
             Log.e(TAG, e.toString());
             fail();
@@ -77,7 +106,7 @@ public class MicronetHardwareOutputsTesting {
     @Test
     public void output1On() {
         try {
-            micronetHardware.setOutputState(MicronetHardware.OUTPUT_1, true, false);
+            micronetHardware.setOutputState(MicronetHardware.OUTPUT_1, true, true);
         } catch (MicronetHardwareException e) {
             Log.e(TAG, e.toString());
             fail();
@@ -87,7 +116,7 @@ public class MicronetHardwareOutputsTesting {
     @Test
     public void output1Off() {
         try {
-            micronetHardware.setOutputState(MicronetHardware.OUTPUT_1, false, false);
+            micronetHardware.setOutputState(MicronetHardware.OUTPUT_1, false, true);
         } catch (MicronetHardwareException e) {
             Log.e(TAG, e.toString());
             fail();
@@ -97,7 +126,7 @@ public class MicronetHardwareOutputsTesting {
     @Test
     public void output2On() {
         try {
-            micronetHardware.setOutputState(MicronetHardware.OUTPUT_2, true, false);
+            micronetHardware.setOutputState(MicronetHardware.OUTPUT_2, true, true);
         } catch (MicronetHardwareException e) {
             Log.e(TAG, e.toString());
             fail();
@@ -107,7 +136,7 @@ public class MicronetHardwareOutputsTesting {
     @Test
     public void output2Off() {
         try {
-            micronetHardware.setOutputState(MicronetHardware.OUTPUT_2, false, false);
+            micronetHardware.setOutputState(MicronetHardware.OUTPUT_2, false, true);
         } catch (MicronetHardwareException e) {
             Log.e(TAG, e.toString());
             fail();
@@ -117,7 +146,7 @@ public class MicronetHardwareOutputsTesting {
     @Test
     public void output3On() {
         try {
-            micronetHardware.setOutputState(MicronetHardware.OUTPUT_3, true, false);
+            micronetHardware.setOutputState(MicronetHardware.OUTPUT_3, true, true);
         } catch (MicronetHardwareException e) {
             Log.e(TAG, e.toString());
             fail();
@@ -127,7 +156,7 @@ public class MicronetHardwareOutputsTesting {
     @Test
     public void output3Off() {
         try {
-            micronetHardware.setOutputState(MicronetHardware.OUTPUT_3, false, false);
+            micronetHardware.setOutputState(MicronetHardware.OUTPUT_3, false, true);
         } catch (MicronetHardwareException e) {
             Log.e(TAG, e.toString());
             fail();

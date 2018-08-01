@@ -1,8 +1,10 @@
 package micronet.hardware;
 
+import android.app.ActivityManager.RunningTaskInfo;
 import android.os.Environment;
 import android.util.Log;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -95,6 +97,7 @@ public class GPIO {
 
             // Run shell script with op.se_dom_ex
             Runtime.getRuntime().exec(new String[]{"setprop", "op.se_dom_ex", "/mnt/shell/emulated/0/outputs" + gpioNum + ".sh"});
+            Log.d("GPIO", "setprop op.se_dom_ex");
 
             // This sleep is only used for testing if we aren't validating
             if(!validateOutputStateAfterSet){
@@ -102,19 +105,19 @@ public class GPIO {
             }
 
             if(validateOutputStateAfterSet){
-                // Sleep initial 50ms
-                Thread.sleep(50);
+                // Sleep initial 40ms
+                Thread.sleep(40);
 
-                // Loop a max of 20 times, sleeping for 25ms between iterations
-                for(int i = 0; i < 20; i++){
+                // Loop a max of 40 times, sleeping for 10ms between iterations
+                for(int i = 0; i < 40; i++){
 
                     // If result file doesn't exist then continue, if last iteration, then fail
                     if(!resultFile.exists()){
                         Log.e("GPIO", "Result file doesn't exist.");
-                        if(i == 19){
+                        if(i == 39){
                             return false;
                         }
-                        Thread.sleep(25);
+                        Thread.sleep(10);
                         continue;
                     }
 
@@ -124,26 +127,29 @@ public class GPIO {
                     int charsRead = fileReader.read(charBuffer);
                     if(charsRead < 1){
                         Log.e("GPIO", "Error setting gpio value. Bad result file read.");
-                        if(i == 19){
+                        if(i == 39){
                             return false;
                         }
-                        Thread.sleep(25);
+                        Thread.sleep(10);
                         continue;
                     }
                     fileReader.close();
                     int resultCode = Integer.valueOf(String.valueOf(charBuffer).replace("\"", "").substring(0, charsRead-1));
                     Log.d("GPIO", "Result from setting gpio " + gpioNum + " " + (state ? "high": "low") + " is: " + resultCode);
 
-                    // If the result code is not 0 then fail
-                    if(resultCode != 0){
-                        Log.e("GPIO", "Error setting output value. Bad result code: " + resultCode);
-                        return false;
-                    }
-
                     boolean deletionResult = resultFile.delete();
                     boolean deletion = file.delete();
                     if(!deletion || !deletionResult){
                         Log.e("GPIO", "Error deleting file while setting gpio value.");
+                    }
+
+                    // If the result code is not 0 then fail
+                    if(resultCode != 0){
+                        Log.e("GPIO", "Error setting output value. Bad result code: " + resultCode);
+                        return false;
+                    }else{
+                        // Result code is 0
+                        break;
                     }
                 }
             }
