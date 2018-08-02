@@ -2,14 +2,10 @@ package micronet.hardware;
 
 import android.util.Log;
 import java.util.ArrayList;
-import java.util.Arrays;
 import micronet.hardware.exception.MicronetHardwareException;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class MicronetHardwareOutputsTesting {
@@ -70,7 +66,7 @@ public class MicronetHardwareOutputsTesting {
 
             long totalTime = endTime - startTime;
             times.add(totalTime);
-            Log.d(TAG, "allOutputsOn() took " + totalTime + " ms to run");
+            Log.d(TAG, "output0On() took " + totalTime + " ms to run");
         }
 
         // Calculate average value
@@ -80,7 +76,7 @@ public class MicronetHardwareOutputsTesting {
         }
         long timeAverage = timeSum/50;
 
-        Log.d(TAG, "Average time it takes to run outputOn(): " + timeAverage + " ms");
+        Log.d(TAG, "Average time it takes to run output0On(): " + timeAverage + " ms");
     }
 
     @Test

@@ -296,7 +296,10 @@ public final class MicronetHardware {
     /**
      * Sets the output state of one of the gpio outputs. To use this function you need to have OS 0.1.17.0 or above.
      *
-     * NOTE: If used with the SmartTab, changing the outputs while the device is undocked will have no effect on the outputs. Only change the output
+     * NOTE: If you run this method without validating and then another setOutputState() within about 500ms of a previous call to this method then the
+     * behavior is undefined. Developers are encouraged to use the validate boolean.
+     *
+     * If used with the SmartTab, changing the outputs while the device is undocked will have no effect on the outputs. Only change the output
      * state while the device is plugged in. It is not possible to get the output state, only to set it. Also, A001 SmartHub devices do not have
      * outputs.
      *
@@ -307,7 +310,8 @@ public final class MicronetHardware {
      *          {@link #OUTPUT_3}
      *
      * @param validateOutputStateAfterSet If true, then it will check if the output state is set properly. This takes usually at least 100 ms and
-     * can take up to 500ms before it times out. If false, then it will not check if the output state is set properly. Will return quickly.
+     * can take up to 500ms before it times out. If false, then it will not check if the output state is set properly and will return rather quickly.
+     * Review the note above.
      *
      * @throws MicronetHardwareException If there was an error changing the output state.
      */
