@@ -169,6 +169,10 @@ public final class MicronetHardware {
     public int getAnalogInput(int inputType) {
         int retval = -1;
 
+        if(inputType < 0 || inputType > 11){
+            return -1;
+        }
+
         synchronized (lock){
             // Use MControl to get the adc voltage
             retval = mcontrol.get_adc_or_gpi_voltage(inputType);
@@ -244,6 +248,10 @@ public final class MicronetHardware {
     public int getInputState(int inputType) {
         int retval = -1;
 
+        if(inputType < 0 || inputType > 7){
+            return -1;
+        }
+
         synchronized (lock){
             // GPIO Inputs match to 692 to 699.
             retval = mcontrol.get_gpio_value(inputType + 692);
@@ -313,9 +321,14 @@ public final class MicronetHardware {
      * can take up to 500ms before it times out. If false, then it will not check if the output state is set properly and will return rather quickly.
      * Review the note above.
      *
-     * @throws MicronetHardwareException If there was an error changing the output state.
+     * @throws MicronetHardwareException If there was an error changing the output state or an invalid parameter is passed in.
      */
     public void setOutputState(int output, boolean state, boolean validateOutputStateAfterSet) throws MicronetHardwareException{
+
+        if(output < 0 || output > 3){
+            throw new MicronetHardwareException("Output parameter must be between 0 and 3 inclusive, not " + output, -5);
+        }
+
         synchronized (lock){
             mcontrol.set_gpio_value(output + 700, state, validateOutputStateAfterSet);
         }
