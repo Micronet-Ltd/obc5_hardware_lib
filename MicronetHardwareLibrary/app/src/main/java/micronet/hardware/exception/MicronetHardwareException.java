@@ -7,12 +7,6 @@ public class MicronetHardwareException extends Exception {
 
     /**
      * The specific error code.
-     *
-     * Error codes for requests:
-     *      -1 : connection failure,
-     *      -2 : tx msg failure,
-     *      -3 : rx msg failure,
-     *      -4 : invalid resp msg type
      */
     private int errorCode;
 
@@ -23,6 +17,14 @@ public class MicronetHardwareException extends Exception {
 
     /**
      * Get the specific error code.
+     *
+     * Error codes for requests:
+     *  -1 : connection failure,
+     *  -2 : tx msg failure,
+     *  -3 : rx msg failure,
+     *  -4 : invalid resp msg type,
+     *  -5 : general error
+     *
      * @return error code
      */
     public int getErrorCode() {
