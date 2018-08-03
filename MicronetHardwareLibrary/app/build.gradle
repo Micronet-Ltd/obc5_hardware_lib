@@ -5,8 +5,8 @@ android {
     defaultConfig {
         minSdkVersion 22
         targetSdkVersion 22
-        versionCode 15
-        versionName "1.5"
+        versionCode 151
+        versionName "1.5.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
             cmake {
