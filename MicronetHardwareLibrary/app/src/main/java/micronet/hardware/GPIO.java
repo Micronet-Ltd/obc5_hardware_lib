@@ -78,7 +78,7 @@ public class GPIO {
 
             // Run shell script with op.se_dom_ex
             Runtime.getRuntime().exec(new String[]{"setprop", "op.se_dom_ex", "/mnt/shell/emulated/0/outputs" + gpioNum + ".sh"});
-            Log.d(TAG, "setprop op.se_dom_ex");
+//            Log.d(TAG, "setprop op.se_dom_ex");
 
             // If you are validating check result file
             if(validateOutputStateAfterSet){
@@ -94,7 +94,7 @@ public class GPIO {
 
                     // If result file doesn't exist then continue, if last iteration, then fail
                     if(!resultFileChecked && !resultFile.exists()){
-                        Log.e(TAG, "Result file doesn't exist.");
+//                        Log.e(TAG, "Result file doesn't exist.");
                         if(i == 39){
                             return false;
                         }
@@ -119,7 +119,7 @@ public class GPIO {
 
                     // Check op.se_dom_ex value
                     if(!checkSeDomExValue()){
-                        Log.e(TAG, "op.se_dom_ex hasn't finish yet");
+//                        Log.e(TAG, "op.se_dom_ex hasn't finish yet");
                         if(i == 39){
                             return false;
                         }
@@ -158,7 +158,7 @@ public class GPIO {
             return false;
         }
         int resultCode = Integer.valueOf(String.valueOf(charBuffer).replace("\"", "").trim().substring(0, charsRead-1));
-        Log.d(TAG, "Result from setting gpio " + gpioNum + " " + (state ? "high": "low") + " is: " + resultCode);
+//        Log.d(TAG, "Result from setting gpio " + gpioNum + " " + (state ? "high": "low") + " is: " + resultCode);
 
         // Make sure result code equal to 0
         if(resultCode != 0){
@@ -178,13 +178,13 @@ public class GPIO {
         bufferedInputStream.close();
 
         if(bytesRead < 1){
-            Log.e(TAG,"No bytes read from op.se_dom_ex value");
+            Log.e(TAG,"No bytes read from op.se_dom_ex value in system properties.");
             return false;
         }
 
         String result = (new String(byteArr, 0 , bytesRead)).replace("\"", "").trim();
 
-        Log.d(TAG, "Value of op.se_dom_ex: " + result);
+//        Log.d(TAG, "Value of op.se_dom_ex: " + result);
 
         // Return whether the value is 0
         return result.equalsIgnoreCase("0");

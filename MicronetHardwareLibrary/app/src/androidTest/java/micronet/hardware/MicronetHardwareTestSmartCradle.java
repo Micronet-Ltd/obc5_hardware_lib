@@ -27,6 +27,68 @@ public class MicronetHardwareTestSmartCradle {
     }
 
     @Test
+    public void settingAndGettingAtTheSameTime() {
+
+        ArrayList<Thread> list = new ArrayList<Thread>();
+
+        for(int i = 0; i < 2; i++){
+            final int threadNumber = i;
+
+            if(threadNumber == 1){
+                list.add(new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.d(TAG, "Thread " + threadNumber + " started.");
+                        for(int j = 0; j < 200; j++){
+                            setOutputOn();
+                        }
+                        Log.d(TAG, "Thread " + threadNumber + " ended.");
+                    }
+                }));
+            }else{
+                list.add(new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.d(TAG, "Thread " + threadNumber + " started.");
+                        for(int j = 0; j < 200; j++){
+                            getMCUVersion();
+                        }
+                        Log.d(TAG, "Thread " + threadNumber + " ended.");
+                    }
+                }));
+            }
+
+        }
+
+        for(int i = 0; i < list.size(); i++){
+            list.get(i).start();
+        }
+
+        // Delay to make sure threads start
+        try {
+            Thread.sleep(400);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        boolean continueChecking = true;
+        while(continueChecking){
+            for(int i = 0; i < list.size(); i++){
+                if(!list.get(i).isAlive()){
+                    list.remove(i);
+                }
+
+                if(list.size() == 0){
+                    continueChecking = false;
+                    break;
+                }
+            }
+        }
+
+        Log.d(TAG, "Set-Get test finished.");
+    }
+
+    @Test
     public void multiThreadedSingleInstanceTest() {
 
         ArrayList<Thread> list = new ArrayList<Thread>();
@@ -78,6 +140,16 @@ public class MicronetHardwareTestSmartCradle {
         }
 
         Log.d(TAG, "Multi-Threaded test finished.");
+    }
+
+    @Test
+    public void setOutputOn(){
+        try {
+            micronetHardware.setOutputState(MicronetHardware.OUTPUT_1, true, true);
+        } catch (MicronetHardwareException e) {
+            Log.e(TAG, e.toString());
+            fail();
+        }
     }
 
     @Test
@@ -290,59 +362,6 @@ public class MicronetHardwareTestSmartCradle {
             fail();
         }
     }
-
-    @Test
-    public void checkRTCBattery(){
-        try {
-            String batteryStatus = micronetHardware.checkRtcBattery();
-            Log.d(TAG, "RTC Battery Status: " + batteryStatus);
-
-            assertEquals("Good",batteryStatus);
-        } catch (MicronetHardwareException e) {
-            Log.e(TAG, e.toString());
-            fail();
-        }
-    }
-
-//    Smart cradle doesn't have this functionality
-//    @Test
-//    public void getRTCDateTime(){
-//        try {
-//            String rtcDateTime = micronetHardware.getRtcDateTime();
-//            Log.d(TAG, "RTC DateTime: " + rtcDateTime);
-//
-//            // Make sure it matches the format of a rtc string
-//            assertTrue(rtcDateTime.matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{2}"));
-//        } catch (MicronetHardwareException e) {
-//            Log.e(TAG, e.toString());
-//            fail();
-//        }
-//    }
-//    @Test
-//    public void setRTCDateTime(){
-//        try {
-//            // Will set datetime to "1111-11-11 11:11:11.00"
-//            micronetHardware.setRtcDateTime("1111-11-11 11:11:11.11");
-//
-//            String rtcDateTime = micronetHardware.getRtcDateTime();
-//            Log.d(TAG, "RTC DateTime: " + rtcDateTime);
-//
-//            // Make sure it matches the format of a rtc string
-//            assertTrue(rtcDateTime.matches("1111-11-11 11:11:\\d{2}\\.\\d{2}"));
-//
-//            // Will set datetime to "2011-01-20 05:34:22.00"
-//            micronetHardware.setRtcDateTime("2011-01-20 05:34:22.55");
-//
-//            rtcDateTime = micronetHardware.getRtcDateTime();
-//            Log.d(TAG, "RTC DateTime: " + rtcDateTime);
-//
-//            // Make sure it matches the format of a rtc string
-//            assertTrue(rtcDateTime.matches("2011-01-20 05:34:\\d{2}\\.\\d{2}"));
-//        } catch (MicronetHardwareException e) {
-//            Log.e(TAG, e.toString());
-//            fail();
-//        }
-//    }
 
     @Test
     public void getRTCCalReg(){
