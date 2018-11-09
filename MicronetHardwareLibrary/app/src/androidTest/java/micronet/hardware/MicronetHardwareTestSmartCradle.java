@@ -107,7 +107,6 @@ public class MicronetHardwareTestSmartCradle {
                     getInputState();
                     getLedStatus();
                     getMCUVersion();
-                    getPowerUpIgnitionState();
                     getRTCCalReg();
                     Log.d(TAG, "Thread " + threadNumber + " ended.");
                 }
@@ -240,12 +239,6 @@ public class MicronetHardwareTestSmartCradle {
         assertTrue(returnArray[7] == 0);
     }
 
-    @Test
-    public void getPowerUpIgnitionState(){
-        int powerUpReason = micronetHardware.getPowerUpIgnitionState();
-
-        assertTrue(powerUpReason == 1 || powerUpReason == 2 ||powerUpReason == 4 ||powerUpReason == 8);
-    }
 
     @Test
     public void getSerialNumber(){
