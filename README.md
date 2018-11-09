@@ -3,6 +3,8 @@ The Micronet Hardware Library is used to get information from the device such as
 
 Currently the Micronet Hardware Library should only be used in one app on the device at a time. 
 
+Note: Each function has a timeout of 500ms. 
+
 #### How to use the .aar file with your project
 Follow directions located here https://stackoverflow.com/a/34919810.
 
