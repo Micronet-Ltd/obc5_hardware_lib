@@ -150,7 +150,7 @@ public final class MicronetHardware {
      *
      * @return Input state voltage level in mV.
      * If there is an error getting the value, the value
-     * of -1 is returned.
+     * of -1 is returned. There is a 500ms timeout.
      *
      * @param inputType to be read. Can be one of the following:
      *  		{@link #kADC_ANALOG_IN1},
@@ -187,7 +187,7 @@ public final class MicronetHardware {
      * If the input is below 6000mv then it is considered low. If it is above 7000mv then it is
      * considered high. If it is between 6000-7000mv then it retains its old state.
      *
-     * @return An int[12] of input state voltage level in mV.
+     * @return An int[12] of input state voltage level in mV. There is a 500ms timeout.
      *       Order of voltages is this way:
      *          {@link #kADC_ANALOG_IN1},
      *  		{@link #kADC_GPIO_IN1},
@@ -201,6 +201,7 @@ public final class MicronetHardware {
      *          {@link #kADC_POWER_VCAP},
      *  		{@link #kADC_TEMPERATURE},
      *          {@link #kADC_CABLE_TYPE}
+     *
      */
     public int[] getAllAnalogInput() {
         int[] retval = new int[12];
@@ -232,7 +233,7 @@ public final class MicronetHardware {
      * it should not be used if the device is undocked.
      *
      * @return 1 when signal state is HIGH, 0 otherwise. In case of error, -1 is
-     *         returned.
+     *         returned. There is a 500ms timeout.
      *
      * @param inputType
      *          Input pin to be read. Can be one of the following:
@@ -244,6 +245,7 @@ public final class MicronetHardware {
      *          {@link #kADC_GPIO_IN5},
      *  		{@link #kADC_GPIO_IN6},
      *          {@link #kADC_GPIO_IN7}
+     *
      */
     public int getInputState(int inputType) {
         int retval = -1;
@@ -277,7 +279,7 @@ public final class MicronetHardware {
      *          {@link #kADC_GPIO_IN7}
      *
      * @return an int[8], if signal state is HIGH 1 for that value, 0 otherwise.
-     * In case of error, -1 is returned in the array for that input.
+     * In case of error, -1 is returned in the array for that input. There is a 500ms timeout.
      */
     public int[] getAllPinInState (){
         int[] retval = new int[8];
@@ -347,7 +349,7 @@ public final class MicronetHardware {
      * 0x0004: Arm Lockup,
      * 0x0008: Watchdog Reset.
      *
-     * In case of error, -1 is returned.
+     * In case of error, -1 is returned. There is a 500ms timeout.
      * </pre>
      */
     public int getPowerUpIgnitionState() {
@@ -371,7 +373,7 @@ public final class MicronetHardware {
 
     /**
      * Gets the MCU version.
-     * @return MCU version Ex: "A.1.2.0"
+     * @return MCU version Ex: "A.1.2.0". There is a 500ms timeout.
      *
      * @throws MicronetHardwareException if there is an error getting the value.
      */
@@ -383,7 +385,7 @@ public final class MicronetHardware {
 
     /**
      * Gets the fpga version.
-     * @return fpga version Ex: "41000002"
+     * @return fpga version Ex: "41000002". There is a 500ms timeout.
      *
      * @throws MicronetHardwareException if there is an error getting the value.
      */
@@ -415,7 +417,7 @@ public final class MicronetHardware {
      * Zero means the led is off. The RGB color code used is are standard RGB color codes defined at:
      * http://www.rapidtables.com/web/color/RGB_Color.html
      *
-     * @return LED object that contains the current state of the desired LED
+     * @return LED object that contains the current state of the desired LED. There is a 500ms timeout.
      *
      * @throws MicronetHardwareException if there is an error getting the value.
      */
@@ -428,7 +430,7 @@ public final class MicronetHardware {
     /**
      * Checks if the RTC battery is good, bad or not present. This function reads the register bit on the RTC to determine whether the RTC is good or bad.
      *
-     * @return "Good" or "Bad" depending on the battery state.
+     * @return "Good" or "Bad" depending on the battery state. There is a 500ms timeout.
      *
      * @throws MicronetHardwareException if there is an error checking the value.
      */
@@ -440,7 +442,7 @@ public final class MicronetHardware {
 
     /**
      * Gets the MCU rtc date and time.
-     * @return a string with the date and time. Ex: "2016-08-25 16:00:55.11"
+     * @return a string with the date and time. Ex: "2016-08-25 16:00:55.11". There is a 500ms timeout.
      *
      * @throws MicronetHardwareException if there is an error getting the value.
      */
@@ -469,7 +471,7 @@ public final class MicronetHardware {
     /**
      * Get the digital and analog rtc calibration registers.
      *
-     * @return An int array of length two containing digital and analog rtc cal, respectively.
+     * @return An int array of length two containing digital and analog rtc cal, respectively. There is a 500ms timeout.
      *
      * @throws MicronetHardwareException if there is an error getting the value.
      */
