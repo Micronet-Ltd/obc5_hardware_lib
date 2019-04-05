@@ -19,3 +19,8 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+-keep class micronet.hardware.MicronetHardware {public *;}
+-keep class micronet.hardware.Info {public *;}
+-keep class micronet.hardware.LED {public *;}
+-keep class micronet.hardware.exception.** {public *;}
+

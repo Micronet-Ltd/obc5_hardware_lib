@@ -24,7 +24,7 @@ import micronet.hardware.exception.MicronetHardwareException;
  */
 public final class MicronetHardware {
 
-    protected static final String TAG = "MicronetHardware";
+    private static final String TAG = "MicronetHardware";
 
     /**
      * Constant describing ignition.
@@ -121,7 +121,7 @@ public final class MicronetHardware {
     private static final Object lock = new Object();
 
     /**
-     * Following singleton design, don't allow instantiation of Micronet Hardware.
+     * Following singleton design, don't allow instantiation or extending of Micronet Hardware.
      */
     private MicronetHardware(){}
 

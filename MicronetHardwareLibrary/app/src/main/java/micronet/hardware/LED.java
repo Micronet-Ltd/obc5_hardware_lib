@@ -7,7 +7,7 @@ import micronet.hardware.exception.MicronetHardwareException;
 /**
  * LED class that contains the information regarding one of the devices LEDs.
  */
-public class LED {
+public final class LED {
 
     /**
      * Constant describing the right LED.
@@ -57,7 +57,7 @@ public class LED {
         this.led = led;
     }
 
-    protected void setValue(int rgb, int brightness) throws MicronetHardwareException{
+    void setValue(int rgb, int brightness) throws MicronetHardwareException{
         MControl mc = new MControl();
         mc.set_led_status(led, brightness, rgb);
     }

@@ -16,18 +16,11 @@
 package micronet.hardware;
 
 import android.os.Build;
-import android.util.Log;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
-import static micronet.hardware.MicronetHardware.TAG;
 
 /**
  *  Micronet Hardware Information class.
  */
-public class Info {
+public final class Info {
 
     /**
      * VERSION

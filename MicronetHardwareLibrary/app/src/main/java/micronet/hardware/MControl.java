@@ -6,7 +6,7 @@ import micronet.hardware.exception.MicronetHardwareException;
 /**
  * Class to interface with the mctl library.
  */
-public class MControl {
+final class MControl {
 
     static {
         System.loadLibrary("mctl");
@@ -37,7 +37,7 @@ public class MControl {
      * @return MCU version Ex: "A.1.2.0"
      * @throws MicronetHardwareException if mcu cannot be reached.
      */
-    protected String get_mcu_version() throws MicronetHardwareException{
+    String get_mcu_version() throws MicronetHardwareException{
         String[] resultArr = jniGetMCUVersion();
         int resultCode = Integer.parseInt(resultArr[0]);
 
@@ -53,7 +53,7 @@ public class MControl {
      * @return fpga version Ex: "41000002"
      * @throws MicronetHardwareException if mcu cannot be reached.
      */
-    protected String get_fpga_version() throws MicronetHardwareException{
+    String get_fpga_version() throws MicronetHardwareException{
         int[] resultArr = jniGetFPGAVersion();
         int resultCode = resultArr[0];
 
@@ -74,7 +74,7 @@ public class MControl {
      *
      * @throws MicronetHardwareException if mcu cannot be reached.
      */
-    protected void set_led_status(int led, int brightness, int rgb) throws MicronetHardwareException{
+    void set_led_status(int led, int brightness, int rgb) throws MicronetHardwareException{
 
         // Check the parameters
         if(led < 0 || led > 2){
@@ -97,7 +97,7 @@ public class MControl {
      * @param gpi_num
      * @return milliVolts
      */
-    protected int get_adc_or_gpi_voltage(int gpi_num){
+    int get_adc_or_gpi_voltage(int gpi_num){
         int[] resultArr = jniGetADCorGPIVoltage(gpi_num);
         int resultCode = resultArr[0];
 
@@ -122,7 +122,7 @@ public class MControl {
      *   0x0008      |       Watchdog Reset
      *----------------------------------------------------
      */
-    protected int get_power_on_reason(){
+    int get_power_on_reason(){
         int[] resultArr = jniGetPowerOnReason();
         int resultCode = resultArr[0];
 
@@ -143,7 +143,7 @@ public class MControl {
      * @param wait_time a wait time given in seconds
      * @throws MicronetHardwareException if mcu cannot be reached
      */
-    protected void set_device_power_off(int wait_time) throws MicronetHardwareException{
+    void set_device_power_off(int wait_time) throws MicronetHardwareException{
         if(wait_time < 0){
             throw new IllegalArgumentException("Parameter wait_time must not be negative");
         }
@@ -161,7 +161,7 @@ public class MControl {
      * @return A string with the date and time. Ex: "2016-08-25 16:00:55.11"
      * @throws MicronetHardwareException if mcu cannot be reached.
      */
-    protected String get_rtc_date_time() throws MicronetHardwareException{
+    String get_rtc_date_time() throws MicronetHardwareException{
         String[] resultArr = jniGetRTCDateTime();
         int resultCode = Integer.parseInt(resultArr[0]);
 
@@ -181,7 +181,7 @@ public class MControl {
      * @param dateTime The date time string.
      * @throws MicronetHardwareException if mcu cannot be reached.
      */
-    protected void set_rtc_date_time(String dateTime) throws MicronetHardwareException{
+    void set_rtc_date_time(String dateTime) throws MicronetHardwareException{
         if(!dateTime.matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{2}")){
             throw new IllegalArgumentException("Date time must be of the form: 2000-00-00 00:00:00.00");
         }
@@ -200,7 +200,7 @@ public class MControl {
      * A value of -1 indicates that value is invalid.
      * @throws MicronetHardwareException if mcu cannot be reached.
      */
-    protected int[] get_rtc_cal_reg() throws MicronetHardwareException{
+    int[] get_rtc_cal_reg() throws MicronetHardwareException{
         int[] resultArr = jniGetRTCCalReg();
         int resultCode = resultArr[0];
 
@@ -220,7 +220,7 @@ public class MControl {
      * @return LED object that contains the current state of the desired LED.
      * @throws MicronetHardwareException if mcu cannot be reached.
      */
-    protected LED get_led_status(int led_num) throws MicronetHardwareException{
+    LED get_led_status(int led_num) throws MicronetHardwareException{
         int[] ledState = jniGetLEDStatus(led_num);
         int resultCode = ledState[0];
 
@@ -244,7 +244,7 @@ public class MControl {
      * @return "Good" or "Bad" depending on the battery state.
      */
 
-    protected String check_rtc_battery() throws MicronetHardwareException{
+    String check_rtc_battery() throws MicronetHardwareException{
         int[] resultArr = jniCheckRTCBattery();
 
         int resultCode = resultArr[0];
@@ -269,7 +269,7 @@ public class MControl {
      * @return An array containing the power on threshold.
      * @throws MicronetHardwareException if mcu cannot be reached.
      */
-    protected int[] get_power_on_threshold() throws MicronetHardwareException{
+    int[] get_power_on_threshold() throws MicronetHardwareException{
         int[] resultArr = jniGetPowerOnThresholdCfg();
         int resultCode = resultArr[0];
 
@@ -285,7 +285,7 @@ public class MControl {
     }
 
     /** Shutdown the device via OS command. */
-    protected static void setSysPropPowerCtlShutdown() {
+    static void setSysPropPowerCtlShutdown() {
         jniSetSysPropPowerCtlShutdown();
     }
 
@@ -294,7 +294,7 @@ public class MControl {
      * @param gpioNumber The gpio number you want to get the value of.
      * @return The value of that GPIO.
      */
-    protected int get_gpio_value(int gpioNumber){
+    int get_gpio_value(int gpioNumber){
         GPIO gpio = new GPIO(gpioNumber);
         return gpio.getValue();
     }
@@ -304,7 +304,7 @@ public class MControl {
      * @param gpioNumber The gpio number you want to get the value of.
      * @return The value of that GPIO.
      */
-    protected void set_gpio_value(int gpioNumber, boolean state, boolean validateOutputStateAfterSet) throws MicronetHardwareException{
+    void set_gpio_value(int gpioNumber, boolean state, boolean validateOutputStateAfterSet) throws MicronetHardwareException{
         GPIO gpio = new GPIO(gpioNumber);
 
         // Set gpio output state
@@ -321,7 +321,7 @@ public class MControl {
      * @param gpio_value The value you want to set the gpio to, either 0 or 1.
      * @throws MicronetHardwareException if mcu cannot be reached.
      */
-    protected void set_gpio_state_dbg(int gpio_num, int gpio_value) throws MicronetHardwareException{
+    void set_gpio_state_dbg(int gpio_num, int gpio_value) throws MicronetHardwareException{
         int resultCode = jniSetGPIOStateDBG(gpio_num, gpio_value);
 
         if(resultCode < 0){
@@ -335,7 +335,7 @@ public class MControl {
      * @return The gpio state.
      * @throws MicronetHardwareException if mcu cannot be reached.
      */
-    protected int get_gpio_state_dbg(int gpio_num) throws MicronetHardwareException{
+    int get_gpio_state_dbg(int gpio_num) throws MicronetHardwareException{
         int[] resultArr = jniGetGPIOStateDBG(gpio_num);
         int resultCode = resultArr[0];
 
@@ -351,7 +351,7 @@ public class MControl {
      * @return Current state of the gpio, either 1 or 0.
      * @throws MicronetHardwareException if mcu cannot be reached.
      */
-    protected int get_can1_j1708_pwr_enable_gpio() throws MicronetHardwareException {
+    int get_can1_j1708_pwr_enable_gpio() throws MicronetHardwareException {
         return get_gpio_state_dbg(512);
     }
 
@@ -360,7 +360,7 @@ public class MControl {
      * @param value What you want to set the gpio value to, either 0 or 1.
      * @throws MicronetHardwareException if mcu cannot be reached.
      */
-    protected void set_can1_j1708_pwr_enable_gpio(int value) throws MicronetHardwareException {
+    void set_can1_j1708_pwr_enable_gpio(int value) throws MicronetHardwareException {
         // Check input data is valid
         if(value < 0 || value > 1){
             throw new IllegalArgumentException("Value must be 1 or 0, not " + value);

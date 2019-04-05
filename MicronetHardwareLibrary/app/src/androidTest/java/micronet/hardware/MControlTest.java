@@ -28,8 +28,8 @@ public class MControlTest {
 
             Log.d(TAG, "MCU Version: " + mcuVersion);
 
-            // Check that the returned string is similar to "A.2.3.0"
-            assertTrue(mcuVersion.matches("\\w\\.\\d+\\.\\d+\\.\\d+"));
+            // Check that the returned string is similar to "A.2.3.0" or "A.2.C.0"
+            assertTrue(mcuVersion.matches("\\w\\.\\d+\\.\\w+\\.\\d+") || mcuVersion.matches("\\w\\.\\d+\\.\\d+\\.\\d+"));
         } catch (MicronetHardwareException e) {
             Log.e(TAG, e.toString());
             fail();

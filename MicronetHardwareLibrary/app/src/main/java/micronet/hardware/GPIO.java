@@ -12,12 +12,12 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class GPIO {
+final class GPIO {
 
-    public static final String TAG = "GPIO";
-    protected int gpioNumber;
+    private static final String TAG = "GPIO";
+    private int gpioNumber;
 
-    protected GPIO(int gpioNum){
+    GPIO(int gpioNum){
         this.gpioNumber = gpioNum;
 
         // If GPIO hasn't already been exported then export it
@@ -40,7 +40,7 @@ public class GPIO {
         }
     }
 
-    protected int getValue() {
+    int getValue() {
         try {
             File file = new File("/sys/class/gpio/gpio"+gpioNumber+"/value");
 
@@ -59,7 +59,7 @@ public class GPIO {
         return -1;
     }
 
-    protected boolean setValue(int gpioNum, boolean state, boolean validateOutputStateAfterSet) {
+    boolean setValue(int gpioNum, boolean state, boolean validateOutputStateAfterSet) {
         int gpioState = state ? 1: 0;
 
         try {

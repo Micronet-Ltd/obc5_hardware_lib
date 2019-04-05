@@ -86,18 +86,18 @@ public class MicronetHardwareAnalogTesting {
 
         // Check that values are in correct range
         // Correct range depends on input voltages to the device and the state of the device
-//        assertTrue("Return value: " + analog_in1, analog_in1 > 11000 && analog_in1 < 23000);
-//        assertTrue("Return value: " + gpio_in1,gpio_in1 > 2700 && gpio_in1 < 3300);
-//        assertTrue("Return value: " + gpio_in2,gpio_in2 > 2700 && gpio_in2 < 3300);
-//        assertTrue("Return value: " + gpio_in3,gpio_in3 > 2700 && gpio_in3 < 3300);
-//        assertTrue("Return value: " + gpio_in4,gpio_in4 > 2700 && gpio_in4 < 3300);
-//        assertTrue("Return value: " + gpio_in5,gpio_in5 > 2700 && gpio_in5 < 3300);
-//        assertTrue("Return value: " + gpio_in6,gpio_in6 > 2700 && gpio_in6 < 3300);
-//        assertTrue("Return value: " + gpio_in7,gpio_in7 > 2700 && gpio_in7 < 3300);
-//        assertTrue("Return value: " + power_in,power_in > 11000 && power_in < 23000);
-//        assertTrue("Return value: " + power_vcap,power_vcap >= 0 && power_vcap < 6000);
-//        assertTrue("Return value: " + temperature,temperature > 500 && temperature < 1500);
-//        assertTrue("Return value: " + cable_type,cable_type > 2000 && cable_type < 4000);
+        assertTrue("Return value: " + analog_in1, analog_in1 > 11000 && analog_in1 < 23000);
+        assertTrue("Return value: " + gpio_in1,gpio_in1 > 2700 && gpio_in1 < 3300);
+        assertTrue("Return value: " + gpio_in2,gpio_in2 > 2700 && gpio_in2 < 3300);
+        assertTrue("Return value: " + gpio_in3,gpio_in3 > 2700 && gpio_in3 < 3300);
+        assertTrue("Return value: " + gpio_in4,gpio_in4 > 2700 && gpio_in4 < 3300);
+        assertTrue("Return value: " + gpio_in5,gpio_in5 > 2700 && gpio_in5 < 3300);
+        assertTrue("Return value: " + gpio_in6,gpio_in6 > 2700 && gpio_in6 < 3300);
+        assertTrue("Return value: " + gpio_in7,gpio_in7 > 2700 && gpio_in7 < 3300);
+        assertTrue("Return value: " + power_in,power_in > 11000 && power_in < 23000);
+        assertTrue("Return value: " + power_vcap,power_vcap >= 0 && power_vcap < 6000);
+        assertTrue("Return value: " + temperature,temperature > 500 && temperature < 1500);
+        assertTrue("Return value: " + cable_type,cable_type > 2000 && cable_type < 4000);
     }
 
     @Test

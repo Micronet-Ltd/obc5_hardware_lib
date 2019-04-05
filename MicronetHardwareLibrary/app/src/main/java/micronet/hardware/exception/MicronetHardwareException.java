@@ -3,7 +3,7 @@ package micronet.hardware.exception;
 /**
  * Micronet Hardware Exception class.
  */
-public class MicronetHardwareException extends Exception {
+public final class MicronetHardwareException extends Exception {
 
     /**
      * The specific error code.

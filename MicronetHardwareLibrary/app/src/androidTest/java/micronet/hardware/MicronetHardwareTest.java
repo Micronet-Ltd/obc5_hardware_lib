@@ -190,7 +190,7 @@ public class MicronetHardwareTest {
             Log.d(TAG, "MCU Version: " + mcuVersion);
 
             // Check that the returned string is similar to "A.2.3.0"
-            assertTrue(mcuVersion.matches("\\w\\.\\d+\\.\\d+\\.\\d+"));
+            assertTrue(mcuVersion.matches("\\w\\.\\d+\\.\\w+\\.\\d+") || mcuVersion.matches("\\w\\.\\d+\\.\\d+\\.\\d+"));
         } catch (MicronetHardwareException e) {
             Log.e(TAG, e.toString());
             fail();
@@ -349,8 +349,9 @@ public class MicronetHardwareTest {
             int[] rtcCalcReg = micronetHardware.getRtcCalReg();
             Log.d(TAG, "RTC CalcReg: " + Arrays.toString(rtcCalcReg));
 
+            // Not positive what
             assertTrue(rtcCalcReg[0] > 0);
-            assertTrue(rtcCalcReg[1] > 0);
+            assertTrue(rtcCalcReg[1] >= 0);
         } catch (MicronetHardwareException e) {
             Log.e(TAG, e.toString());
             fail();
