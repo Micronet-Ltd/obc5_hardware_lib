@@ -1,6 +1,5 @@
 package micronet.hardware;
 
-import android.os.Build;
 import android.util.Log;
 
 import org.junit.Before;
@@ -18,10 +17,12 @@ public class MicronetHardwareTest {
     protected static final String TAG = "MicronetHardwareTest";
 
     private static MicronetHardware micronetHardware = null;
+    private int deviceType;
 
     @Before
     public void setUp() throws Exception {
         micronetHardware = MicronetHardware.getInstance();
+        deviceType = new Info().getDeviceType();
     }
 
     @Test
@@ -29,7 +30,7 @@ public class MicronetHardwareTest {
 
         ArrayList<Thread> list = new ArrayList<Thread>();
 
-        for(int i = 0; i < 10; i++){
+        for(int i = 0; i < 30; i++){
             final int threadNumber = i;
 
             list.add(new Thread(new Runnable() {
@@ -105,7 +106,7 @@ public class MicronetHardwareTest {
         assertTrue(gpio_in6 > 2700 && gpio_in6 < 3300);
         assertTrue(gpio_in7 > 2700 && gpio_in7 < 3300);
         assertTrue(power_in > 11000 && power_in < 23000);
-        assertTrue(power_vcap > 4000 && power_vcap < 6000);
+        assertTrue(power_vcap >= 0 && power_vcap < 6000);
         assertTrue(temperature > 500 && temperature < 1500);
         assertTrue(cable_type > 2000 && cable_type < 4000);
     }
@@ -125,7 +126,7 @@ public class MicronetHardwareTest {
         assertTrue(returnArray[6] > 2700 && returnArray[6] < 3300);
         assertTrue(returnArray[7] > 2700 && returnArray[7] < 3300);
         assertTrue(returnArray[8] > 11000 && returnArray[8] < 23000);
-        assertTrue(returnArray[9] > 4000 && returnArray[9] < 6000);
+        assertTrue(returnArray[9] >= 0 && returnArray[9] < 6000);
         assertTrue(returnArray[10] > 500 && returnArray[10] < 1500);
         assertTrue(returnArray[11] > 2000 && returnArray[11] < 4000);
     }
@@ -292,69 +293,76 @@ public class MicronetHardwareTest {
 
     @Test
     public void checkRTCBattery(){
-        try {
-            String batteryStatus = micronetHardware.checkRtcBattery();
-            Log.d(TAG, "RTC Battery Status: " + batteryStatus);
+        if(deviceType == Info.SMART_HUB) {
+            try {
+                String batteryStatus = micronetHardware.checkRtcBattery();
+                Log.d(TAG, "RTC Battery Status: " + batteryStatus);
 
-            assertEquals("Good",batteryStatus);
-        } catch (MicronetHardwareException e) {
-            Log.e(TAG, e.toString());
-            fail();
+                assertEquals("Good", batteryStatus);
+            } catch (MicronetHardwareException e) {
+                Log.e(TAG, e.toString());
+                fail();
+            }
         }
     }
 
     @Test
     public void getRTCDateTime(){
-        try {
-            String rtcDateTime = micronetHardware.getRtcDateTime();
-            Log.d(TAG, "RTC DateTime: " + rtcDateTime);
+        if(deviceType == Info.SMART_HUB) {
+            try {
+                String rtcDateTime = micronetHardware.getRtcDateTime();
+                Log.d(TAG, "RTC DateTime: " + rtcDateTime);
 
-            // Make sure it matches the format of a rtc string
-            assertTrue(rtcDateTime.matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{2}"));
-        } catch (MicronetHardwareException e) {
-            Log.e(TAG, e.toString());
-            fail();
+                // Make sure it matches the format of a rtc string
+                assertTrue(rtcDateTime.matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{2}"));
+            } catch (MicronetHardwareException e) {
+                Log.e(TAG, e.toString());
+                fail();
+            }
         }
     }
 
     @Test
     public void setRTCDateTime(){
-        try {
-            // Will set datetime to "1111-11-11 11:11:11.00"
-            micronetHardware.setRtcDateTime("1111-11-11 11:11:11.11");
+        if(deviceType == Info.SMART_HUB){
+            try {
+                // Will set datetime to "1111-11-11 11:11:11.00"
+                micronetHardware.setRtcDateTime("1111-11-11 11:11:11.11");
 
-            String rtcDateTime = micronetHardware.getRtcDateTime();
-            Log.d(TAG, "RTC DateTime: " + rtcDateTime);
+                String rtcDateTime = micronetHardware.getRtcDateTime();
+                Log.d(TAG, "RTC DateTime: " + rtcDateTime);
 
-            // Make sure it matches the format of a rtc string
-            assertTrue(rtcDateTime.matches("2111-11-11 11:11:\\d{2}\\.\\d{2}"));
+                // Make sure it matches the format of a rtc string
+                assertTrue(rtcDateTime.matches("2111-11-11 11:11:\\d{2}\\.\\d{2}"));
 
-            // Will set datetime to "2011-01-20 05:34:22.00"
-            micronetHardware.setRtcDateTime("2011-01-20 05:34:22.55");
+                // Will set datetime to "2011-01-20 05:34:22.00"
+                micronetHardware.setRtcDateTime("2011-01-20 05:34:22.55");
 
-            rtcDateTime = micronetHardware.getRtcDateTime();
-            Log.d(TAG, "RTC DateTime: " + rtcDateTime);
+                rtcDateTime = micronetHardware.getRtcDateTime();
+                Log.d(TAG, "RTC DateTime: " + rtcDateTime);
 
-            // Make sure it matches the format of a rtc string
-            assertTrue(rtcDateTime.matches("2011-01-20 05:34:\\d{2}\\.\\d{2}"));
-        } catch (MicronetHardwareException e) {
-            Log.e(TAG, e.toString());
-            fail();
+                // Make sure it matches the format of a rtc string
+                assertTrue(rtcDateTime.matches("2011-01-20 05:34:\\d{2}\\.\\d{2}"));
+            } catch (MicronetHardwareException e) {
+                Log.e(TAG, e.toString());
+                fail();
+            }
         }
     }
 
     @Test
     public void getRTCCalReg(){
-        try {
-            int[] rtcCalcReg = micronetHardware.getRtcCalReg();
-            Log.d(TAG, "RTC CalcReg: " + Arrays.toString(rtcCalcReg));
+        if(deviceType == Info.SMART_HUB) {
+            try {
+                int[] rtcCalcReg = micronetHardware.getRtcCalReg();
+                Log.d(TAG, "RTC CalcReg: " + Arrays.toString(rtcCalcReg));
 
-            // Not positive what
-            assertTrue(rtcCalcReg[0] > 0);
-            assertTrue(rtcCalcReg[1] >= 0);
-        } catch (MicronetHardwareException e) {
-            Log.e(TAG, e.toString());
-            fail();
+                assertTrue(rtcCalcReg[0] > 0);
+                assertTrue(rtcCalcReg[1] >= 0);
+            } catch (MicronetHardwareException e) {
+                Log.e(TAG, e.toString());
+                fail();
+            }
         }
     }
 }

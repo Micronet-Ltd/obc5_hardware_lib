@@ -401,7 +401,7 @@ public final class MicronetHardware {
      *
      * @param led        right LED is 0, center LED is 1, and left LED is 2.
      * @param brightness brightness can be any int 0-255. Zero means the LED is off.
-     * @param rgb        input a color as an int.
+     * @param rgb        input a color as an int between 0x000000 and 0xffffff.
      *
      * @throws MicronetHardwareException if there is an error setting the value.
      */

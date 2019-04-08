@@ -1,21 +1,16 @@
 package micronet.hardware;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import android.util.Log;
 import java.util.ArrayList;
 import java.util.Arrays;
-import micronet.hardware.exception.MicronetHardwareException;
 import org.junit.Before;
 import org.junit.Test;
 
 public class MicronetHardwareAnalogTesting {
 
     private static final String TAG = "MicronetHardwareTest";
-
     private static MicronetHardware micronetHardware = null;
 
     @Before
@@ -114,22 +109,22 @@ public class MicronetHardwareAnalogTesting {
 
             allCalls.add(values);
 
+            // Check that values are in correct range
+            // Correct range depends on input voltages to the device and the state of the device
+            assertTrue(returnArray[0] > 11000 && returnArray[0] < 23000);
+            assertTrue(returnArray[1] > 2700 && returnArray[1] < 3300);
+            assertTrue(returnArray[2] > 2700 && returnArray[2] < 3300);
+            assertTrue(returnArray[3] > 2700 && returnArray[3] < 3300);
+            assertTrue(returnArray[4] > 2700 && returnArray[4] < 3300);
+            assertTrue(returnArray[5] > 2700 && returnArray[5] < 3300);
+            assertTrue(returnArray[6] > 2700 && returnArray[6] < 3300);
+            assertTrue(returnArray[7] > 2700 && returnArray[7] < 3300);
+            assertTrue(returnArray[8] > 11000 && returnArray[8] < 23000);
+            assertTrue(returnArray[9] >= 0 && returnArray[9] < 6000);
+            assertTrue(returnArray[10] > 500 && returnArray[10] < 1500);
+            assertTrue(returnArray[11] > 2000 && returnArray[11] < 4000);
+
             Log.d(TAG, Arrays.toString(returnArray));
         }
-
-        // Check that values are in correct range
-        // Correct range depends on input voltages to the device and the state of the device
-//        assertTrue("Return array value: " + Arrays.toString(returnArray),returnArray[0] > 11000 && returnArray[0] < 23000);
-//        assertTrue("Return array value: " + Arrays.toString(returnArray), returnArray[1] > 2700 && returnArray[1] < 3300);
-//        assertTrue("Return array value: " + Arrays.toString(returnArray),returnArray[2] > 2700 && returnArray[2] < 3300);
-//        assertTrue("Return array value: " + Arrays.toString(returnArray),returnArray[3] > 2700 && returnArray[3] < 3300);
-//        assertTrue("Return array value: " + Arrays.toString(returnArray),returnArray[4] > 2700 && returnArray[4] < 3300);
-//        assertTrue("Return array value: " + Arrays.toString(returnArray),returnArray[5] > 2700 && returnArray[5] < 3300);
-//        assertTrue("Return array value: " + Arrays.toString(returnArray),returnArray[6] > 2700 && returnArray[6] < 3300);
-//        assertTrue("Return array value: " + Arrays.toString(returnArray),returnArray[7] > 2700 && returnArray[7] < 3300);
-//        assertTrue("Return array value: " + Arrays.toString(returnArray),returnArray[8] > 11000 && returnArray[8] < 23000);
-//        assertTrue("Return array value: " + Arrays.toString(returnArray),returnArray[9] >= 0 && returnArray[9] < 6000);
-//        assertTrue("Return array value: " + Arrays.toString(returnArray),returnArray[10] > 500 && returnArray[10] < 1500);
-//        assertTrue("Return array value: " + Arrays.toString(returnArray),returnArray[11] > 2000 && returnArray[11] < 4000);
     }
 }

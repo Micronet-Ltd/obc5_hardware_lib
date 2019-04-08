@@ -20,7 +20,7 @@ enum LED {
 static pthread_mutex_t mutexlock;
 
 JNIEXPORT jobjectArray JNICALL
-Java_micronet_hardware_MControl_jniGetMCUVersion(JNIEnv *env, jobject instance) {
+Java_micronet_hardware_MControl_a(JNIEnv *env, jobject instance) {
     uint8_t data[255];
     memset(data, 0, sizeof(data)); // for automatically-allocated arrays
 
@@ -52,7 +52,7 @@ Java_micronet_hardware_MControl_jniGetMCUVersion(JNIEnv *env, jobject instance) 
 }
 
 JNIEXPORT jintArray JNICALL
-Java_micronet_hardware_MControl_jniGetFPGAVersion(JNIEnv *env, jobject instance) {
+Java_micronet_hardware_MControl_b(JNIEnv *env, jobject instance) {
     int size = 2;
     jintArray ret = env->NewIntArray(size);
 
@@ -77,7 +77,7 @@ Java_micronet_hardware_MControl_jniGetFPGAVersion(JNIEnv *env, jobject instance)
 }
 
 JNIEXPORT jintArray JNICALL
-Java_micronet_hardware_MControl_jniGetADCorGPIVoltage(JNIEnv *env, jobject instance, jint gpi_num) {
+Java_micronet_hardware_MControl_c(JNIEnv *env, jobject instance, jint gpi_num) {
     int size = 2;
     jintArray ret = env->NewIntArray(size);
 
@@ -102,7 +102,7 @@ Java_micronet_hardware_MControl_jniGetADCorGPIVoltage(JNIEnv *env, jobject insta
 }
 
 JNIEXPORT jintArray JNICALL
-Java_micronet_hardware_MControl_jniGetLEDStatus(JNIEnv *env, jobject instance, jint led_num) {
+Java_micronet_hardware_MControl_d(JNIEnv *env, jobject instance, jint led_num) {
     int size = 5;
     jintArray ret = env->NewIntArray(size);
 
@@ -133,7 +133,7 @@ Java_micronet_hardware_MControl_jniGetLEDStatus(JNIEnv *env, jobject instance, j
 }
 
 JNIEXPORT jint JNICALL
-Java_micronet_hardware_MControl_jniSetLEDValue(JNIEnv *env, jobject instance, jint led, jint brightness, jint rgb) {
+Java_micronet_hardware_MControl_e(JNIEnv *env, jobject instance, jint led, jint brightness, jint rgb) {
     int result = -1;
 
     uint8_t red = (rgb & 0xFF0000) >> 16;
@@ -152,7 +152,7 @@ Java_micronet_hardware_MControl_jniSetLEDValue(JNIEnv *env, jobject instance, ji
 }
 
 JNIEXPORT jintArray JNICALL
-Java_micronet_hardware_MControl_jniGetPowerOnThresholdCfg(JNIEnv *env, jobject instance) {
+Java_micronet_hardware_MControl_f(JNIEnv *env, jobject instance) {
     int size = 4;
     jintArray ret = env->NewIntArray(size);
 
@@ -186,7 +186,7 @@ Java_micronet_hardware_MControl_jniSetPowerOnThresholdCfg(JNIEnv *env, jobject i
 }
 
 JNIEXPORT jintArray JNICALL
-Java_micronet_hardware_MControl_jniGetPowerOnReason(JNIEnv *env, jobject instance) {
+Java_micronet_hardware_MControl_g(JNIEnv *env, jobject instance) {
     int size = 2;
     jintArray ret = env->NewIntArray(size);
 
@@ -208,7 +208,7 @@ Java_micronet_hardware_MControl_jniGetPowerOnReason(JNIEnv *env, jobject instanc
 }
 
 JNIEXPORT jint JNICALL
-Java_micronet_hardware_MControl_jniSetDevicePowerOff(JNIEnv *env, jobject instance, jint wait_time) {
+Java_micronet_hardware_MControl_h(JNIEnv *env, jobject instance, jint wait_time) {
     int result = -1;
 
     int fd = iosocket_connect();
@@ -221,7 +221,7 @@ Java_micronet_hardware_MControl_jniSetDevicePowerOff(JNIEnv *env, jobject instan
 }
 
 JNIEXPORT jobjectArray JNICALL
-Java_micronet_hardware_MControl_jniGetRTCDateTime(JNIEnv *env, jobject instance) {
+Java_micronet_hardware_MControl_i(JNIEnv *env, jobject instance) {
     // Create initial arr
     jobjectArray ret = (jobjectArray) env->NewObjectArray(2,env->FindClass("java/lang/String"),env->NewStringUTF(""));
 
@@ -253,7 +253,7 @@ Java_micronet_hardware_MControl_jniGetRTCDateTime(JNIEnv *env, jobject instance)
  * 					  Ex : 2016-03-29 19:09:06.58
  */
 JNIEXPORT jint JNICALL
-Java_micronet_hardware_MControl_jniSetRTCDateTime(JNIEnv *env, jobject instance, jstring time) {
+Java_micronet_hardware_MControl_j(JNIEnv *env, jobject instance, jstring time) {
     char * dt_str = (char *)env->GetStringUTFChars(time, JNI_FALSE);
 
     int result = -1;
@@ -268,7 +268,7 @@ Java_micronet_hardware_MControl_jniSetRTCDateTime(JNIEnv *env, jobject instance,
 }
 
 JNIEXPORT jintArray JNICALL
-Java_micronet_hardware_MControl_jniGetRTCCalReg(JNIEnv *env, jobject instance) {
+Java_micronet_hardware_MControl_k(JNIEnv *env, jobject instance) {
     jintArray jarr = env->NewIntArray(3);
     jint *narr = env->GetIntArrayElements(jarr, NULL);
 
@@ -354,7 +354,7 @@ Java_micronet_hardware_MControl_jniGetGPIOStateDBG(JNIEnv *env, jobject instance
  * returns true if RTC battery is good.
  */
 JNIEXPORT jintArray JNICALL
-Java_micronet_hardware_MControl_jniCheckRTCBattery(JNIEnv *env, jobject instance) {
+Java_micronet_hardware_MControl_l(JNIEnv *env, jobject instance) {
     int size = 2;
     jintArray ret = env->NewIntArray(size);
 
@@ -377,7 +377,7 @@ Java_micronet_hardware_MControl_jniCheckRTCBattery(JNIEnv *env, jobject instance
 }
 
 JNIEXPORT void JNICALL
-Java_micronet_hardware_MControl_jniSetSysPropPowerCtlShutdown(JNIEnv *env, jobject instance) {
+Java_micronet_hardware_MControl_m(JNIEnv *env, jobject instance) {
     // preferred method shutting down Android
     system("setprop sys.powerctl shutdown");
 }

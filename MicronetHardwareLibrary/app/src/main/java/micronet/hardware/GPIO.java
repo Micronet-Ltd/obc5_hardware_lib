@@ -1,6 +1,5 @@
 package micronet.hardware;
 
-import android.app.ActivityManager.RunningTaskInfo;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -60,6 +59,11 @@ final class GPIO {
     }
 
     boolean setValue(int gpioNum, boolean state, boolean validateOutputStateAfterSet) {
+        // Check params are valid
+        if(gpioNum < 700 || gpioNum > 703){
+            throw new IllegalArgumentException("gpioNum must be between 700 and 703, not " + gpioNum);
+        }
+
         int gpioState = state ? 1: 0;
 
         try {
@@ -178,7 +182,7 @@ final class GPIO {
         bufferedInputStream.close();
 
         if(bytesRead < 1){
-            Log.e(TAG,"No bytes read from op.se_dom_ex value in system properties.");
+            Log.e(TAG,"No bytes read.");
             return false;
         }
 
